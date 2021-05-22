@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>Multithreading and high concurrency</title>
-    <url>/2021/05/20/hello-world/</url>
+    <url>/2021/05/20/multithread/</url>
     <content><![CDATA[<p>The high concurrency will not be talked in this article today, let’s talk about multithreading first.</p>
 <h2 id="Multithreading"><a href="#Multithreading" class="headerlink" title="Multithreading"></a>Multithreading</h2><h3 id="The-first-way-to-create-a-thread-implements-Thread"><a href="#The-first-way-to-create-a-thread-implements-Thread" class="headerlink" title="The first way to create a thread: implements Thread"></a>The first way to create a thread: implements Thread</h3><span id="more"></span>
 
