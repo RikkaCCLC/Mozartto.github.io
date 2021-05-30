@@ -10,14 +10,6 @@
       </categories>
   </entry>
   <entry>
-    <title>record</title>
-    <url>/2021/05/22/record/</url>
-    <content><![CDATA[<h3 id="financial"><a href="#financial" class="headerlink" title="financial"></a>financial</h3>]]></content>
-      <categories>
-        <category>life</category>
-      </categories>
-  </entry>
-  <entry>
     <title>multithreading and high currency</title>
     <url>/2021/05/23/multithread/</url>
     <content><![CDATA[<p>The high concurrency will not be talked in this article today, let’s talk about multithreading first.</p>
@@ -396,6 +388,14 @@
 ]]></content>
       <categories>
         <category>computer</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>record</title>
+    <url>/2021/05/22/record/</url>
+    <content><![CDATA[<h3 id="financial"><a href="#financial" class="headerlink" title="financial"></a>financial</h3>]]></content>
+      <categories>
+        <category>life</category>
       </categories>
   </entry>
 </search>
