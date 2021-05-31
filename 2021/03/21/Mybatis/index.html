@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;mozartto.cn&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Muse&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;always&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script>
+<meta name="description" content="MyBatis是一个Java持久化框架，它通过XML描述符或注解把对象与存储过程或SQL语句关联起来，映射成数据库内对应的纪录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mybatis详解">
+<meta property="og:url" content="https://mozartto.cn/2021/03/21/Mybatis/index.html">
+<meta property="og:site_name" content="Motto">
+<meta property="og:description" content="MyBatis是一个Java持久化框架，它通过XML描述符或注解把对象与存储过程或SQL语句关联起来，映射成数据库内对应的纪录。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mozartto.cn/images/4.jpg">
+<meta property="article:published_time" content="2021-03-21T03:54:46.000Z">
+<meta property="article:modified_time" content="2021-03-21T09:23:39.000Z">
+<meta property="article:author" content="Motto">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mozartto.cn/images/4.jpg">
+
+
+<link rel="canonical" href="https://mozartto.cn/2021/03/21/Mybatis/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;mozartto.cn&#x2F;2021&#x2F;03&#x2F;21&#x2F;Mybatis&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;03&#x2F;21&#x2F;Mybatis&#x2F;&quot;,&quot;title&quot;:&quot;Mybatis详解&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Mybatis详解 | Motto</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Motto</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">simple makes better</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-computer"><a href="/categories/computer/" rel="section"><i class="fas fa-laptop fa-fw"></i>computer</a></li>
+        <li class="menu-item menu-item-books"><a href="/books/" rel="section"><i class="fas fa-book fa-fw"></i>books</a></li>
+        <li class="menu-item menu-item-life"><a href="/categories/life/" rel="section"><i class="fas fa-mug-hot fa-fw"></i>life</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-games"><a href="/games/" rel="section"><i class="fab fa-steam fa-fw"></i>games</a></li>
+        <li class="menu-item menu-item-other"><a href="/categories/other/" rel="section"><i class="fas fa-glass-cheers fa-fw"></i>other</a></li>
+        <li class="menu-item menu-item-message"><a href="/message/" rel="section"><i class="fas fa-comment-dots fa-fw"></i>message</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mybatis"><span class="nav-number">1.</span> <span class="nav-text">Mybatis</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA"><span class="nav-number">1.1.</span> <span class="nav-text">Mybatis的项目搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BAmaven%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">1.创建maven项目</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E5%A4%84%E7%90%86%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">2.处理配置文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E8%BF%90%E8%A1%8C%E6%B5%8B%E8%AF%95"><span class="nav-number">1.2.</span> <span class="nav-text">Mybatis运行测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E6%97%A5%E5%BF%97%E9%85%8D%E7%BD%AE"><span class="nav-number">1.3.</span> <span class="nav-text">Mybatis日志配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E5%85%B6%E5%AE%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.4.</span> <span class="nav-text">Mybatis其它配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E5%BC%95%E5%85%A5%E5%A4%96%E9%83%A8%E5%B1%9E%E6%80%A7%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.5.</span> <span class="nav-text">Mybatis引入外部属性配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlSession%E4%B8%89%E7%A7%8D%E6%9F%A5%E8%AF%A2%E6%96%B9%E6%B3%95"><span class="nav-number">1.6.</span> <span class="nav-text">sqlSession三种查询方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlSession%E4%B8%89%E7%A7%8D%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="nav-number">1.7.</span> <span class="nav-text">sqlSession三种参数传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sqlSession%E5%AE%9E%E7%8E%B0CRUD"><span class="nav-number">1.8.</span> <span class="nav-text">sqlSession实现CRUD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E5%9F%BA%E4%BA%8E%E6%8E%A5%E5%8F%A3%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E5%BC%80%E5%8F%91"><span class="nav-number">1.9.</span> <span class="nav-text">Mybatis基于接口代理模式开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyBatis%E6%8E%A5%E5%8F%A3%E4%BB%A3%E7%90%86%E4%B8%8B%E7%9A%84%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98"><span class="nav-number">1.10.</span> <span class="nav-text">MyBatis接口代理下的参数问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyBatis%E6%A8%A1%E7%B3%8A%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.11.</span> <span class="nav-text">MyBatis模糊查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E4%B8%BB%E9%94%AE%E8%87%AA%E5%A2%9E%E5%9B%9E%E5%A1%AB"><span class="nav-number">1.12.</span> <span class="nav-text">Mybatis主键自增回填</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E6%8E%A5%E5%8F%A3%E4%BB%A3%E7%90%86CURD"><span class="nav-number">1.13.</span> <span class="nav-text">Mybatis接口代理CURD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81SQL%E4%B9%8Bif"><span class="nav-number">1.14.</span> <span class="nav-text">动态SQL之if</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81SQL%E4%B9%8Bwhere%E5%92%8Cwhen"><span class="nav-number">1.15.</span> <span class="nav-text">动态SQL之where和when</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81SQL%E4%B9%8BSET"><span class="nav-number">1.16.</span> <span class="nav-text">动态SQL之SET</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81SQL%E4%B9%8BTRIM"><span class="nav-number">1.17.</span> <span class="nav-text">动态SQL之TRIM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81SQL%E4%B9%8BBIND"><span class="nav-number">1.18.</span> <span class="nav-text">动态SQL之BIND</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81SQL%E4%B9%8BSQL"><span class="nav-number">1.19.</span> <span class="nav-text">动态SQL之SQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81SQL%E4%B9%8Bforeach"><span class="nav-number">1.20.</span> <span class="nav-text">动态SQL之foreach</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%A4%84%E7%90%86%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.21.</span> <span class="nav-text">手动处理映射关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.22.</span> <span class="nav-text">Mybatis多表查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E5%AF%B9%E4%B8%80%E5%85%B3%E8%81%94%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.22.1.</span> <span class="nav-text">一对一关联查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E5%AF%B9%E5%A4%9A%E5%85%B3%E8%81%94%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.22.2.</span> <span class="nav-text">一对多关联查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E5%AF%B9%E5%A4%9A%E5%85%B3%E8%81%94%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.22.3.</span> <span class="nav-text">多对多关联查询</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2-%E7%BA%A7%E8%81%94%E7%A7%AF%E6%9E%81%E5%8A%A0%E8%BD%BD"><span class="nav-number">1.23.</span> <span class="nav-text">多表查询_级联积极加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2-%E7%BA%A7%E8%81%94%E6%87%92%E5%8A%A0%E8%BD%BD"><span class="nav-number">1.24.</span> <span class="nav-text">多表查询_级联懒加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MyBatis%E4%BD%BF%E7%94%A8%E6%B3%A8%E8%A7%A3%E5%AE%8C%E6%88%90CRUD"><span class="nav-number">1.25.</span> <span class="nav-text">MyBatis使用注解完成CRUD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98"><span class="nav-number">1.26.</span> <span class="nav-text">Mybatis一级缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98"><span class="nav-number">1.27.</span> <span class="nav-text">Mybatis二级缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E4%B8%89%E6%96%B9%E7%BC%93%E5%AD%98%EF%BC%88%E4%BA%86%E8%A7%A3%EF%BC%89"><span class="nav-number">1.28.</span> <span class="nav-text">Mybatis三方缓存（了解）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%EF%BC%88%E4%BA%86%E8%A7%A3%EF%BC%89"><span class="nav-number">1.29.</span> <span class="nav-text">Mybatis逆向工程（了解）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mybatis%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%BC%96%E8%AF%91%E9%97%AE%E9%A2%98%EF%BC%88IDEA%E7%9A%84%E5%B0%8F%E5%9D%91%EF%BC%89"><span class="nav-number">1.30.</span> <span class="nav-text">Mybatis配置文件编译问题（IDEA的小坑）</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Motto"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Motto</p>
+  <div class="site-description" itemprop="description">a blog about some record in life</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Mozartto" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Mozartto" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=1220883974@qq.com" title="E-Mail → https:&#x2F;&#x2F;mail.qq.com&#x2F;cgi-bin&#x2F;qm_share?t&#x3D;qm_mailme&amp;email&#x3D;1220883974@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Jerry21313800" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;Jerry21313800" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.quora.com/profile/Jerry-1020" title="Quora → https:&#x2F;&#x2F;www.quora.com&#x2F;profile&#x2F;Jerry-1020" rel="noopener" target="_blank"><i class="fab fa-quora fa-fw"></i>Quora</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/Mozartto" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+    
+    <div class="post-gallery-image">
+      <img src="/images/4.jpg" itemprop="contentUrl">
+    </div>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mozartto.cn/2021/03/21/Mybatis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Motto">
+      <meta itemprop="description" content="a blog about some record in life">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Motto">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mybatis详解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-03-21 11:54:46 / Modified: 17:23:39" itemprop="dateCreated datePublished" datetime="2021-03-21T11:54:46+08:00">2021-03-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/computer/" itemprop="url" rel="index"><span itemprop="name">computer</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2021/03/21/Mybatis/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2021/03/21/Mybatis/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>7.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">MyBatis是一个Java持久化框架，它通过XML描述符或注解把对象与存储过程或SQL语句关联起来，映射成数据库内对应的纪录。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Mybatis"><a href="#Mybatis" class="headerlink" title="Mybatis"></a>Mybatis</h2><h3 id="Mybatis的项目搭建"><a href="#Mybatis的项目搭建" class="headerlink" title="Mybatis的项目搭建"></a>Mybatis的项目搭建</h3><p>但凡是框架，使用都是分三步走：</p>
+<ol>
+<li>导入jar文件，使用maven</li>
+<li>处理配置文件</li>
+<li>开发业务代码</li>
+</ol>
+<h5 id="1-创建maven项目"><a href="#1-创建maven项目" class="headerlink" title="1.创建maven项目"></a>1.创建maven项目</h5><p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210407132103248.png" alt="image-20210407132103248"></p>
+<p>注意之前设置maven的时候要把你用的maven覆盖掉idea原有的maven，同时配置文件和本地仓库位置也要自己配置一下。</p>
+<p>创建完一个maven项目之后需要导入如下的依赖：（在mvnrepository.com）中去搜索对应的依赖。总共四个依赖：</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210407133128215.png" alt="image-20210407133128215"></p>
+<p>注意其中的scope标签，表示的是你这个依赖的范围。Junit是在测试的时候用的，所以它的scope是test。</p>
+<p>lombok的scope是provided，因为Lombok就是在编译的时候需要使用一下</p>
+<h5 id="2-处理配置文件"><a href="#2-处理配置文件" class="headerlink" title="2.处理配置文件"></a>2.处理配置文件</h5><p><strong>1.准备数据库，包结构和实体类：</strong></p>
+<p>先在IDEA中创建一个maven项目，下面这个是mybatis的项目结构：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408090551255.png" alt="image-20210408090551255" style="zoom:67%;" />
+
+
+
+<p>我们需要做的就是在Java目录下创建自己域名的包，然后在包下创建两个文件夹：mapper和pojo。</p>
+<p><strong>2.准备mapper映射文件和核心配置文件</strong></p>
+<p>我们知道第二个大步骤是处理核心配置文件，那么mybatis有哪些配置文件呢？如下图：</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408091425065.png" alt="image-20210408091425065"></p>
+<p>首先是SqlMapConfig.xml配置文件，一些URL、Driver、UserName和Password等信息都往这里面放，它下面要关联一系列的Mapper映射文件，每一个mapper映射文件对应一个数据库表，比如Dept表，每一个数据库表我们要做的增删改查操作都放在mapper映射文件里面。那么如何配置这两个配置文件呢？</p>
+<p>在mybatis官网的入门教程中可以查到这么一段配置代码：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408092022337.png" alt="image-20210408092022337" style="zoom:50%;" />
+
+<p>放在项目的resources资源目录下，在resources目录下创建sqlMapConfig.xml文件，把上面这段代码粘进去。创建了xml后IDEA会默认为我们在文档顶部生成一段文档约束，不用去管，也不要删掉。</p>
+<p>我们需要更改里面的四个property选项，注意，在xml文档中写url的时候会用到&amp;符号，但是在是在xml和html文档中写这些符号都需要在符号后面跟上一个转义符amp;才可以，也就是说&amp;才代表了一个完整的&amp;符号。</p>
+<p>在mapper文件夹下创建DeptMapper.xml文件，去mybatis官网里面把mapper的映射代码粘进来，mapper文件夹下应该还要有一个名为DeptMapper的接口，然后我们要保证项目编译之后xml文件和其对应的接口要放在同一个包中</p>
+<p>上面的mapper对应的路径也要改一下</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408094725451.png" alt="image-20210408094725451" style="zoom:70%;" />
+
+<p>DeptMapper.xml文件中的内容如下：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408111143668.png" alt="image-20210408111143668" style="zoom:70%;" />
+
+<p>然后我们需要在pojo文件夹下创建数据库表对应的实体类，实体类名字要与数据库表名保持一致，实体类要实现序列化（Serializable）接口，在实体类中需要添加对应列名的属性，并提供相应的get、set方法以及构造方法。</p>
+<p>但是！but！<img src="file:///C:\Users\xiaoqiyao\Documents\Tencent Files\1220883974\Image\C2C\92AA8D022A50F6B0C5FB24AFD774A79C.gif" alt="img" style="zoom:15%;" />在我们使用了Lombok之后，我们可以直接写一个小注解，然后Lombok会自动帮我们生成对应的get、set和对应的构造方法！注解格式如下：</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408100129365.png" alt="image-20210408100129365"></p>
+<p>注意：在mybatis中DAO层统一改为mapper层，意思就是连接数据库那一层，里面会写一些SQL的增删改查代码以及Java代码。</p>
+<h3 id="Mybatis运行测试"><a href="#Mybatis运行测试" class="headerlink" title="Mybatis运行测试"></a>Mybatis运行测试</h3><p>在原生的JDBC中，我们查询数据库内容可能要写一大堆代码，还要配置什么Driver、Connector等等，但是在mybatis中只需要像下面这样写：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408101941785.png" alt="image-20210408101941785" style="zoom:50%;" />
+
+<p>那这些都准备完了之后，我们要如何对数据库进行增删改查呢？通过一个sqlSession对象，也叫sql会话对象。</p>
+<p>下面你将看到的，是一幅比较乱的图，我来一一解释：</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408102812343.png" alt="image-20210408102812343"></p>
+<p>我们需要一个sqlSession对象来对数据库进行增删改查，session就像是一个生产线，那么生产线从哪里来？需要一个工厂，也就是SqlSessionFactory，工厂从哪里来？需要工人来修，工人就是SqlSessionFactoryBuilder，工人的build方法中需要传入一个IO流对象，这个reader对象就是sqlMapConfig.xml文件，就像是建造工厂的一个图纸一样。IO流怎么获得呢？通过一个Resources类获得，返回一个</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408104907354.png" alt="image-20210408104907354"></p>
+<p>在Test方法之前和之后可以添加@Before和@After注解，分别在@Test方法的之前和之后自动执行</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408110822498.png" alt="image-20210408110822498" style="zoom: 67%;" />
+
+<p>把close方法放到@After方法中：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408110747360.png" alt="image-20210408110747360" style="zoom:67%;" />
+
+
+
+<h3 id="Mybatis日志配置"><a href="#Mybatis日志配置" class="headerlink" title="Mybatis日志配置"></a>Mybatis日志配置</h3><p>我们想要像navicat那样看一下数据库运行的日志细节，这个时候我们在IDEA中就需要额外的一个日志了，否则我们只能看到运行结果</p>
+<p>我们需要在整个项目的pom.xml配置文件中去添加日志的依赖。依赖到mvnrepository.com里面去找，直接搜log4j即可</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408111716735.png" alt="image-20210408111716735" style="zoom:50%;" />
+
+<p>弄完之后import changes（IDEA右下角的小弹窗）：<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408111754609.png" alt="image-20210408111754609" style="zoom:67%;" /></p>
+<p>然后我们需要在resources的根目录下创建一个这样的文件：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408111924609.png" alt="image-20210408111924609" style="zoom:50%;" />
+
+<p>里面要粘的内容如下：（可以百度到）</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408112007194.png" alt="image-20210408112007194" style="zoom:67%;" />
+
+<p>日志打印分为四个级别：<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408112104822.png" alt="image-20210408112104822"></p>
+<p>debug是最细的一种。所以我们只需要在项目中添加一个依赖，再添加一个log4j.properties文件即可</p>
+<p>注意，上面用的是log4j版本1，如果你导入的是log4j的版本2的依赖，创建的文件如下：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408112852044.png" alt="image-20210408112852044" style="zoom:80%;" />
+
+<p>文件名为：log4j2.xml</p>
+<h3 id="Mybatis其它配置"><a href="#Mybatis其它配置" class="headerlink" title="Mybatis其它配置"></a>Mybatis其它配置</h3><p>（注意：以下配置都是在sqlMapConfig.xml里面配置）</p>
+<p>1.关于事务的配置</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408113952228.png" alt="image-20210408113952228"></p>
+<p>把JDBC改成MANAGED，我们其实不用设置这个，后面会全部托管给Spring</p>
+<p>2.mapper加载映射文件</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408114621638.png" alt="image-20210408114621638"></p>
+<p>这个后面再讲，讲到代理模式的时候会讲</p>
+<p>3.指定类型别名</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408114545813.png" alt="image-20210408114545813"></p>
+<p>可以省去一些包名，不用每次都写一大堆路径</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408115109812.png" alt="image-20210408115109812" style="zoom:67%;" />
+
+<p>那如果有100个类呢？每个类都要这样写一大行，那不是太多了？可以使用包扫描来起别名：（格式如下）</p>
+<p>别名规则就是类的首字母小写</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408115212844.png" alt="image-20210408115212844"></p>
+<h3 id="Mybatis引入外部属性配置文件"><a href="#Mybatis引入外部属性配置文件" class="headerlink" title="Mybatis引入外部属性配置文件"></a>Mybatis引入外部属性配置文件</h3><p>之前在核心配置文件中配置了四个和MySQL有关的信息，和mybatis的核心配置耦合度太高，其实这四个信息可以放在其它地方。这样每个配置文件的功能都比较单一，这样要好一点。</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408115838593.png" alt="image-20210408115838593"></p>
+<p>在resources下新建一个properties属性的配置文件：</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408120011998.png" alt="image-20210408120011998"></p>
+<p>内容如下：</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408120246649.png" alt="image-20210408120246649"></p>
+<p>用户名和密码写你自己的。</p>
+<p>在mybatis核心配置文件中添加下面这段：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408120609958.png" alt="image-20210408120609958" style="zoom:50%;" />
+
+<p>原来的属性改成这样即可：（花括号里的名称与jdbc配置文件里面的名称对应）</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408120641096.png" alt="image-20210408120641096" style="zoom:67%;" />
+
+<p>注意，jdbc.properties里面不要有空格。当内外都配置了driver的时候，外部配置文件中的配置优先。（引入了外部文件，内部就没必要写了）</p>
+<p>jdbc配置文件中建议加一下前缀，因为其它配置文件中可能也会有username和password：</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408121128970.png" alt="image-20210408121128970"></p>
+<p>（美元符和大括号里面也改一下）</p>
+<h3 id="sqlSession三种查询方法"><a href="#sqlSession三种查询方法" class="headerlink" title="sqlSession三种查询方法"></a>sqlSession三种查询方法</h3><p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408122523517.png" alt="image-20210408122523517"></p>
+<p>现在来说一下跳过的pojo和DAO</p>
+<p>pojo里面存放的是和数据库表所对应的实体类对象，DAO里面存放的是对数据库进行的增删改查操作。</p>
+<p>在pojo中创建数据库表的实体类，并把表中的列信息创建为属性，并提供相应的get、set以及构造方法（用Lombok注解）</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408123225242.png" alt="image-20210408123225242"></p>
+<p>现在我想对这个数据库进行增删改查，所以要在mapper里面进行一些操作：（mapper就是DAO）</p>
+<p>那么我们要在mapper里面进行哪些操作呢？我们可以定义一个方法：**(第一种，查询单个对象)**</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408124619028.png" alt="image-20210408124619028"></p>
+<p>在mapper中这个select标签就相当于是定义了一个方法，id就是方法名，标签里面写我们的SQL语句resultType就是返回值类型，返回的是一个emp对象（员工信息，在pojo里面有对应的实体类）。</p>
+<p>parameterType是参数类型</p>
+<p>注意，你写完一个新的mapper文件之后要在核心配置文件里面加载以下新的mapper文件：（把Emp加上了）</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408125104221.png" alt="image-20210408125104221" style="zoom:67%;" />
+
+<p>在测试类中调用上面mapper文件里面定义的方法：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408125155544.png" alt="image-20210408125155544" style="zoom:60%;" />
+
+<p><strong>第二种：使用List查询多个对象</strong></p>
+<p>这个是mapper里面对应的新定义的查询多个对象的方法：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408125702090.png" alt="image-20210408125702090" style="zoom:60%;" />
+
+<p>测试查询多个对象：（下面这个注释写错了，是查询多个对象，不用在意）</p>
+<p>下面那个foreach也可以直接用增强for(emp.for+回车即可)，这种foreach写法稍稍结合了一点lambda表达式和函数引用</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408125606945.png" alt="image-20210408125606945" style="zoom:50%;" />
+
+
+
+<p><strong>第三种：使用Map查询多个对象，将数据库里的主键作为Map中的键</strong></p>
+<p>上面的是返回多个对象的List集合，下面来看一下返回多个对象的Map集合：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408153434393.png" alt="image-20210408153434393" style="zoom:67%;" />
+
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408153255670.png" alt="image-20210408153255670" style="zoom:67%;" />
+
+
+
+<h3 id="sqlSession三种参数传递"><a href="#sqlSession三种参数传递" class="headerlink" title="sqlSession三种参数传递"></a>sqlSession三种参数传递</h3><p>我们刚刚讲的这些查询都是没有参数的，但我们知道SQL语句中有些时候是有参数传递的，下面来讲一下如何传递参数。</p>
+<p><strong>单个参数的情况：</strong></p>
+<p>这个是mapper文件中的代码：（说明都在注释里）</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408161934193.png" alt="image-20210408161934193"></p>
+<p>test方法中：前面传方法名，后面传参数</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408160858630.png" alt="image-20210408160858630"></p>
+<p>上面是单个参数传递，下面看多个参数传递：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408163610173.png" alt="image-20210408163610173" style="zoom:70%;" />
+
+<p><strong>参数是一个map集合</strong>：</p>
+<p>&amp;gt代表xml中的大于符号（great than）小于符号是&amp;lt分号，大于等于是&amp;gt分号=，小于等于同理。</p>
+<p>对应的test方法：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408163948331.png" alt="image-20210408163948331" style="zoom:70%;" />
+
+<p>查询结果如下：</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408164234594.png" alt="image-20210408164234594"></p>
+<p><strong>参数为一个对象：</strong></p>
+<p>上面的两个参数为deptno和sal，那我也可以直接传一个emp对象进去，然后从emp对象身上去取这两个属性出来。</p>
+<p>arg是参数的意思，args意思就是多个参数。get和set方法Lombok已经写过注解了，此处可以直接调用。</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408164944898.png" alt="image-20210408164944898" style="zoom:67%;" />
+
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408164828482.png" alt="image-20210408164828482" style="zoom:70%;" />
+
+
+
+<h3 id="sqlSession实现CRUD"><a href="#sqlSession实现CRUD" class="headerlink" title="sqlSession实现CRUD"></a>sqlSession实现CRUD</h3><p>查询方法刚刚说过了，增删改还没说。增删改方法的返回值类型都是int，但是在这里没有resultType，否则报错。parameterType可以不写（之前说过）</p>
+<p>增加数据方法：</p>
+<p>注意，这边增加完数据需要手动提交一下事务，不然mybatis是默认回滚的，数据不会有变化。（增删改都需要手动提交事务）或者在@Before的方法中设置一个true，为自动提交。</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408172721671.png" alt="image-20210408172721671"></p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408173153877.png" alt="image-20210408173153877"></p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408173042336.png" alt="image-20210408173042336" style="zoom:67%;" />
+
+
+
+<p>修改数据：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408173545403.png" alt="image-20210408173545403" style="zoom:67%;" />
+
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408173456902.png" alt="image-20210408173456902" style="zoom:67%;" />
+
+<p>删除数据：</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408173854827.png" alt="image-20210408173854827" style="zoom:67%;" /><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408173913847.png" alt="image-20210408173913847"><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408173854827.png" alt="image-20210408173854827" style="zoom:67%;" /><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408173913847.png" alt="image-20210408173913847"></p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408173913847.png" alt="image-20210408173913847"></p>
+<h3 id="Mybatis基于接口代理模式开发"><a href="#Mybatis基于接口代理模式开发" class="headerlink" title="Mybatis基于接口代理模式开发"></a>Mybatis基于接口代理模式开发</h3><p>先把你要对数据库进行的操作的方法全部定义在一个接口里面，定义为抽象方法</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408180310269.png" alt="image-20210408180310269"></p>
+<p>在接口的<strong>同级目录下</strong>创建一个对应的mapper文件，内容如下：（mapper.xml文件里面实现了接口里面定义的抽象方法：</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408181432291.png" alt="image-20210408181432291"></p>
+<p>maven有一个缺点，就是整个蓝色的Java目录下只编译Java文件，不编译xml文件。人家这么设定的原因就是想让我们把代码和目录文件分开。在resources目录下创建一个同名路径，然后把配置文件放进去。创建的时候一步一步创建，不要写带点的包名，否则会被识别为一个包。（其实后面学SpringBoot的时候配置文件和Java文件编译之后可以不用在同级目录下，后面再说）</p>
+<p>涨知识：IDEA有时候编译项目的时候会误报，此时我们可以按CTRL+alt+shift+H将编译级别调低，就不会误报了。（不过我不太想调低）</p>
+<p>测试类中的代码：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408182428691.png" alt="image-20210408182428691" style="zoom:67%;" />
+
+<p>这个接口不用我们自己去写实现类，mybatis会自动帮我们生成实现类，我们可以直接调用里面的方法，这个方法就是我们在mapper中重写的方法。</p>
+<p>别忘了新写完一个mapper后要在核心配置文件中添加mapper的映射：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210408182906081.png" alt="image-20210408182906081" style="zoom:80%;" />
+
+<p>我们发现，这个方法完全是我们自己定义的方法，没有用sqlSession对象中的update哪些方法，耦合度降低了。到后面耦合度会更低，sqlSession对象直接看不到了，直接用mapper去调findAll方法。框架真香。</p>
+<h3 id="MyBatis接口代理下的参数问题"><a href="#MyBatis接口代理下的参数问题" class="headerlink" title="MyBatis接口代理下的参数问题"></a>MyBatis接口代理下的参数问题</h3><p>定义两个方法，一个是根据empno去寻找员工，另一个是根据员工编号和薪资下限寻找员工。</p>
+<p>注意，下面两个定义的方法海阳老师是写了文档注释的，一般定义接口中的抽象方法都是要写文档注释的，这是开发中的好习惯。</p>
+<p>EmpMapper.java文件中定义的抽象方法（蓝色小鸟）：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410090844285.png" alt="image-20210410090844285" style="zoom:60%;" />
+
+<p>那么我们要为这两个我们要实现的方法写SQL语句</p>
+<p>EmpMapper.xml文件中重写的方法（红色小鸟，注意两个文件要同名噢）</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410090418475.png" alt="image-20210410090418475" style="zoom:70%;" />
+
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410091710629.png" alt="image-20210410091710629" style="zoom:67%;" />
+
+<p>arg0，arg1这些代表的就是test方法里面传来的参数（按顺序）</p>
+<p>也可以使用param* ，param1，param2…（从1开始）</p>
+<p>test文件中的测试方法：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410091710629.png" alt="image-20210410091710629" style="zoom:67%;" />
+
+<p>还可以在接口中给参数起别名：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410092208716.png" alt="image-20210410092208716" style="zoom:67%;" />
+
+<p>注意：起了别名之后arg* 不能使用，param* 可以使用</p>
+<p>上面的empno应该是deptno，写错了。</p>
+<h3 id="MyBatis模糊查询"><a href="#MyBatis模糊查询" class="headerlink" title="MyBatis模糊查询"></a>MyBatis模糊查询</h3><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410095400865.png" alt="image-20210410095400865" style="zoom:80%;" />
+
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410095707225.png" alt="image-20210410095707225" style="zoom:70%;" />
+
+<p>这个字母a会作为参数传入到Java文件的接口的抽象方法中，抽象方法再调用xml文件里重写的SQL语句对数据库进行增删改查。</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410095835292.png" alt="image-20210410095835292" style="zoom:67%;" />
+
+<p>这样查就会出错哦。把ename那里改一下：</p>
+<p>改成<code>like concat (&#39;%&#39;, #&#123;ename&#125;, &#39;%&#39;)</code> 里面不要有多余的空格。</p>
+<h3 id="Mybatis主键自增回填"><a href="#Mybatis主键自增回填" class="headerlink" title="Mybatis主键自增回填"></a>Mybatis主键自增回填</h3><p>这种细碎使用技巧和知识点比较多。</p>
+<h3 id="Mybatis接口代理CURD"><a href="#Mybatis接口代理CURD" class="headerlink" title="Mybatis接口代理CURD"></a>Mybatis接口代理CURD</h3><p>展示一些DML的操作。快速了解一下即可。该讲的前面都讲了。</p>
+<h3 id="动态SQL之if"><a href="#动态SQL之if" class="headerlink" title="动态SQL之if"></a>动态SQL之if</h3><p>动态SQL是MyBatis框架中非常好用的一个功能。</p>
+<p>Java接口类和test方法中都是正常写，就是xml文件中的SQL语句部分有一些变化。</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410105800527.png" alt="image-20210410105800527" style="zoom: 67%;" />
+
+<h3 id="动态SQL之where和when"><a href="#动态SQL之where和when" class="headerlink" title="动态SQL之where和when"></a>动态SQL之where和when</h3><p>把where 1=1 改成一个<where></where>标签。</p>
+<p>有了where标签就可以去掉 if 中的第一个and</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410110524674.png" alt="image-20210410110524674" style="zoom:67%;" />
+
+<p>或者把 if 结构换成 choose - when 结构：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410110703867.png" alt="image-20210410110703867" style="zoom:67%;" />
+
+
+
+<h3 id="动态SQL之SET"><a href="#动态SQL之SET" class="headerlink" title="动态SQL之SET"></a>动态SQL之SET</h3><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410111645737.png" alt="image-20210410111645737" style="zoom:67%;" />
+
+<h3 id="动态SQL之TRIM"><a href="#动态SQL之TRIM" class="headerlink" title="动态SQL之TRIM"></a>动态SQL之TRIM</h3><p>set 和 where相当于是trim的特殊情况</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410112944408.png" alt="image-20210410112944408" style="zoom:67%;" />
+
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410112859331.png" alt="image-20210410112859331" style="zoom:67%;" />
+
+<h3 id="动态SQL之BIND"><a href="#动态SQL之BIND" class="headerlink" title="动态SQL之BIND"></a>动态SQL之BIND</h3><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410113325004.png" alt="image-20210410113325004" style="zoom:67%;" />
+
+<h3 id="动态SQL之SQL"><a href="#动态SQL之SQL" class="headerlink" title="动态SQL之SQL"></a>动态SQL之SQL</h3><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410114519740.png" alt="image-20210410114519740" style="zoom: 80%;" />
+
+<p>直接用sql id 上面那一段那种写法，可以省去下面的很多代码，下面写SQL想写上面那一大堆查询语句时，直接 “include refid=标签” 即可。</p>
+<h3 id="动态SQL之foreach"><a href="#动态SQL之foreach" class="headerlink" title="动态SQL之foreach"></a>动态SQL之foreach</h3><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410120128102.png" alt="image-20210410120128102" style="zoom:70%;" />
+
+<p>哇噢，看不懂。懂了。就是你要查多个员工的数据，你传入的是多个empno参数，然后你要在xml文件中把这些参数用foreach遍历一下。</p>
+<h3 id="手动处理映射关系"><a href="#手动处理映射关系" class="headerlink" title="手动处理映射关系"></a>手动处理映射关系</h3><p> 当你实体类中的属性名和数据库的列名不一致的时候，要使用resultMap来处理一下。</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410141755126.png" alt="image-20210410141755126" style="zoom:67%;" />
+
+<h3 id="Mybatis多表查询"><a href="#Mybatis多表查询" class="headerlink" title="Mybatis多表查询"></a>Mybatis多表查询</h3><h4 id="一对一关联查询"><a href="#一对一关联查询" class="headerlink" title="一对一关联查询"></a>一对一关联查询</h4><p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410143034506.png" alt="image-20210410143034506"></p>
+<p>看到了这个目录结构，感觉还蛮重要的，可以说一下。蓝色的Java文件夹下存放的是Java代码，其下又分为两个文件夹：mapper和pojo。pojo里面放的是数据库表对应的实体类，mapper里面存放的是要执行SQL的接口，里面定义了抽象方法。</p>
+<p>比如现在你要查emp员工的一大堆信息，要求还要查询员工的部门。但是resultType只会去emp类的属性里面去找结果类型，所以现在你要在emp的实体类中加入一条dept属性。同时要在其对应的mapper映射文件中加入一个association标签，代表这是一个关联属性。</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410150305312.png" alt="image-20210410150305312" style="zoom:67%;" />
+
+<p>手动处理映射的意义是什么呢？之前我们在mapper文件中定义方法时都可以定义resultType，但是resultType只能指定一种类型。当我们想要返回多种类型时，就需要手动处理映射，使用resultMap。</p>
+<p>比如我想要查询一个部门中的一些员工信息，还有这个部门的编号和地理位置等，此时我是根据部门来查，但是其中会返回员工信息。</p>
+<p>在部门的实体类中定义完自身属性之后，再定义一个存放员工的list集合：</p>
+<p>在mapper映射文件c中重写方法，并将返回值类型设置为resultMap，并自己定义resultMap的映射关系。</p>
+<p>collection代表的是一个集合，ofType指的是集合里的元素类型。collection会把在它下面定义的resultMap放入自身集合中。</p>
+<p><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410154331669.png" alt="image-20210410154331669"></p>
+<p>resuleMap就填写上面的deptJoinEmps</p>
+<p>Test方法：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410154025662.png" alt="image-20210410154025662" style="zoom:67%;" />
+
+<h4 id="一对多关联查询"><a href="#一对多关联查询" class="headerlink" title="一对多关联查询"></a>一对多关联查询</h4><p>一个部门返回多个员工，一对多</p>
+<h4 id="多对多关联查询"><a href="#多对多关联查询" class="headerlink" title="多对多关联查询"></a>多对多关联查询</h4><p>这个其实好解释，前两个你会了这个你也就会了。通过project表查询正在进行的项目，里面有projectID表中的部分属性，同时projectID中有emp中的部分属性（比如empno），这样想查询哪些员工做了哪些项目就可以通过project一层一层地进行查询。</p>
+<p>那结果集是怎么封装的呢？首先返回一个project对象，一个project类里面有一个list集合属性，这个集合里面装地时projectID对象，同时每个projectID对象里面又有emp属性，里面装的是emp对象（一对一）。</p>
+<p>所以这个映射是先一对多，然后一对一。</p>
+<p>一对多用collection，一对一用association</p>
+<p>Java接口文件：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410161206393.png" alt="image-20210410161206393" style="zoom:67%;" />
+
+<p>mapper.xml文件：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410162018095.png" alt="image-20210410162018095" style="zoom:67%;" />
+
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410162123507.png" alt="image-20210410162123507" style="zoom:67%;" />
+
+<p>总结：多对多表的关系的转换需要一个中间表来处理，会转化成一些一对多和一对一</p>
+<p>test方法：</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410162526775.png" alt="image-20210410162526775" style="zoom:67%;" />
+
+<p>注意，Emp实体类里面记得用Lombok注解添加构造方法和get、set方法！</p>
+<h3 id="多表查询-级联积极加载"><a href="#多表查询-级联积极加载" class="headerlink" title="多表查询_级联积极加载"></a>多表查询_级联积极加载</h3><p>就是在定义collection的时候附加上一些属性。</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410165203754.png" alt="image-20210410165203754" style="zoom:67%;" />
+
+<p>select是你在往collection里放入元素的时候要调用的另一个方法。javaType是你collection的类型，column是你要往collection里放的元素，jdbcType是放入的元素类型，fetchType是加载类型，有积极加载和懒加载两种模式</p>
+<h3 id="多表查询-级联懒加载"><a href="#多表查询-级联懒加载" class="headerlink" title="多表查询_级联懒加载"></a>多表查询_级联懒加载</h3><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410165933824.png" alt="image-20210410165933824" style="zoom:67%;" />
+
+
+
+<h3 id="MyBatis使用注解完成CRUD"><a href="#MyBatis使用注解完成CRUD" class="headerlink" title="MyBatis使用注解完成CRUD"></a>MyBatis使用注解完成CRUD</h3><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410171438221.png" alt="image-20210410171438221" style="zoom:67%;" />
+
+<p>直接在接口的抽象方法上@select即可指定此抽象方法要执行的查询语句，就不用在其对应的mapper映射文件中再写SQL了。当然，需要频繁改动的SQL最好还是在mapper里写，方便修改。但是有些固定的SQL语句可以使用注解来写，简化mapper里面的代码。</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410171749896.png" alt="image-20210410171749896" style="zoom:60%;" />
+
+<p>这些SQL相对来说功能都比较固定，修改可能性不大。</p>
+<h3 id="Mybatis一级缓存"><a href="#Mybatis一级缓存" class="headerlink" title="Mybatis一级缓存"></a>Mybatis一级缓存</h3><p>缓存可以使连接数据库查询的次数变低。比如现在我要根据empno=7521来查询一个员工信息，一般mybatis会以键值对的形式来进行缓存。就是把emp作为键key，7521作为值value，存储在mybatis缓存中。这样下次查询7521员工信息的时候，就会直接从自身缓存中提出信息，而不会连接数据库进行多一次的查询。注意，缓存信息是存储在sqlSession中，如果你用两个sqlSession查询同一个数据，MyBatis还是会连接数据库进行查询。</p>
+<p>调用sqlSession.commit()方法时会自动清空缓存。（事务提交时情空缓存，避免增删改造成的缓存不一致问题）只有增删改的时候需要手动提交事务。</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410175725126.png" alt="image-20210410175725126" style="zoom:67%;" />
+
+<h3 id="Mybatis二级缓存"><a href="#Mybatis二级缓存" class="headerlink" title="Mybatis二级缓存"></a>Mybatis二级缓存</h3><p>二级缓存可以实现跨sqlSession之间的共享数据，是在sqlSession之外的一个缓存空间。</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410174712050.png" alt="image-20210410174712050" style="zoom:67%;" />
+
+<p>二级缓存默认并不开启，需要我们手动设置开启。<strong>注意：sqlSession必须提交之后，相关数据才会放入二级缓存。</strong></p>
+<p>二级缓存要求实体类必须实现序列化接口。并且可以把这些序列化的数据放入到其它位置，比如本地磁盘，Redis数据库等等。</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410175927172.png" alt="image-20210410175927172" style="zoom:67%;" />
+
+<h3 id="Mybatis三方缓存（了解）"><a href="#Mybatis三方缓存（了解）" class="headerlink" title="Mybatis三方缓存（了解）"></a>Mybatis三方缓存（了解）</h3><img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410180027734.png" alt="image-20210410180027734" style="zoom:60%;" />
+
+<p>反正就是借助第三方数据库进行缓存，包括著名的Redis，但是这个现在用不到，因为是分布式的时候用的。</p>
+<h3 id="Mybatis逆向工程（了解）"><a href="#Mybatis逆向工程（了解）" class="headerlink" title="Mybatis逆向工程（了解）"></a>Mybatis逆向工程（了解）</h3><p>自己查文档。这个好用的，自动帮你生成基础的SQL、mapper配置文件、实体类和接口这些。</p>
+<h3 id="Mybatis配置文件编译问题（IDEA的小坑）"><a href="#Mybatis配置文件编译问题（IDEA的小坑）" class="headerlink" title="Mybatis配置文件编译问题（IDEA的小坑）"></a>Mybatis配置文件编译问题（IDEA的小坑）</h3><p>在Maven中添加一个插件，可以直接把xml配置文件放在蓝色Java目录下，和对应的同名接口Java文件放在一起，这样比较科学，就不用在resources目录下一级一级地去建对应的目录然后把xml文件放进去了。要导入一个依赖，这个依赖自己去网上查代码，添加到mybatis的核心配置文件中即可。</p>
+<img src="C:\Users\xiaoqiyao\AppData\Roaming\Typora\typora-user-images\image-20210410181723525.png" alt="image-20210410181723525" style="zoom:67%;" />
+
+<p>其实有些时候配置文件和Java代码放一块看着也挺杂的，Maven其实是建议我们把配置文件和Java代码分开放的。</p>
+<p>MyBatis终于肝完了，NICE！</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Motto WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Motto Alipay">
+        <span>Alipay</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Motto
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mozartto.cn/2021/03/21/Mybatis/" title="Mybatis详解">https://mozartto.cn/2021/03/21/Mybatis/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="https://twitter.com/Jerry21313800">
+          <span class="icon">
+            <i class="fab fa-twitter"></i>
+          </span>
+
+          <span class="label">Twitter</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/08/IO%E6%B5%81/" rel="prev" title="关于IO流">
+                  <i class="fa fa-chevron-left"></i> 关于IO流
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/28/Spring/" rel="next" title="Spring Framework">
+                  Spring Framework <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">黔ICP备 2021003893 </a>
+      <img src="/images/beian.png"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2021003893" rel="noopener" target="_blank">黔网公安备 2021003893 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fas fa-battery-full"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Motto</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>Symbols count total: </span>
+    <span title="Symbols count total">202k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>Reading time total &asymp;</span>
+    <span title="Reading time total">3:04</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{&quot;enable&quot;:true,&quot;appid&quot;:&quot;cyvsVbDPQ&quot;,&quot;appkey&quot;:&quot;850d54eeada1b129a1fa523dedb189ff&quot;}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>

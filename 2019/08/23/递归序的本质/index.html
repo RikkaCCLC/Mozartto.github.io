@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;mozartto.cn&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Muse&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;always&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script>
+<meta name="description" content="理解递归序的本质。高度结构化的coding，让你即便是个新手，也能把这个套路写出来。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉树的递归套路——理解递归序的本质">
+<meta property="og:url" content="https://mozartto.cn/2019/08/23/%E9%80%92%E5%BD%92%E5%BA%8F%E7%9A%84%E6%9C%AC%E8%B4%A8/index.html">
+<meta property="og:site_name" content="Motto">
+<meta property="og:description" content="理解递归序的本质。高度结构化的coding，让你即便是个新手，也能把这个套路写出来。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://mozartto.cn/images/8.jpg">
+<meta property="article:published_time" content="2019-08-23T03:54:49.000Z">
+<meta property="article:modified_time" content="2019-11-12T10:23:41.000Z">
+<meta property="article:author" content="Motto">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mozartto.cn/images/8.jpg">
+
+
+<link rel="canonical" href="https://mozartto.cn/2019/08/23/%E9%80%92%E5%BD%92%E5%BA%8F%E7%9A%84%E6%9C%AC%E8%B4%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;mozartto.cn&#x2F;2019&#x2F;08&#x2F;23&#x2F;%E9%80%92%E5%BD%92%E5%BA%8F%E7%9A%84%E6%9C%AC%E8%B4%A8&#x2F;&quot;,&quot;path&quot;:&quot;2019&#x2F;08&#x2F;23&#x2F;递归序的本质&#x2F;&quot;,&quot;title&quot;:&quot;二叉树的递归套路——理解递归序的本质&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>二叉树的递归套路——理解递归序的本质 | Motto</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Motto</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">simple makes better</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-computer"><a href="/categories/computer/" rel="section"><i class="fas fa-laptop fa-fw"></i>computer</a></li>
+        <li class="menu-item menu-item-books"><a href="/books/" rel="section"><i class="fas fa-book fa-fw"></i>books</a></li>
+        <li class="menu-item menu-item-life"><a href="/categories/life/" rel="section"><i class="fas fa-mug-hot fa-fw"></i>life</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-games"><a href="/games/" rel="section"><i class="fab fa-steam fa-fw"></i>games</a></li>
+        <li class="menu-item menu-item-other"><a href="/categories/other/" rel="section"><i class="fas fa-glass-cheers fa-fw"></i>other</a></li>
+        <li class="menu-item menu-item-message"><a href="/message/" rel="section"><i class="fas fa-comment-dots fa-fw"></i>message</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%80%92%E5%BD%92%E5%A5%97%E8%B7%AF"><span class="nav-number">1.</span> <span class="nav-text">二叉树的递归套路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%EF%BC%9A%E4%BA%8C%E5%8F%89%E6%A0%91%E7%BB%93%E6%9E%84%E5%A6%82%E4%B8%8B%E5%AE%9A%E4%B9%89%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">题目：二叉树结构如下定义：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#x%E7%9A%84%E5%90%8E%E7%BB%A7%E7%BB%93%E7%82%B9%E6%98%AF%E5%85%B6%E5%8F%B3%E6%A0%91%E4%B8%8A%E7%9A%84%E6%9C%80%E5%B7%A6%E7%BB%93%E7%82%B9"><span class="nav-number">1.1.1.</span> <span class="nav-text">x的后继结点是其右树上的最左结点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%80%92%E5%BD%92%E5%A5%97%E8%B7%AF-1"><span class="nav-number">1.2.</span> <span class="nav-text">二叉树的递归套路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%80%92%E5%BD%92%E5%A5%97%E8%B7%AF-2"><span class="nav-number">1.3.</span> <span class="nav-text">二叉树的递归套路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9A%E7%BB%99%E5%AE%9A%E4%B8%80%E6%A3%B5%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%A4%B4%E7%BB%93%E7%82%B9head%EF%BC%8C%E4%BB%BB%E4%BD%95%E4%B8%A4%E4%B8%AA%E7%BB%93%E7%82%B9%E4%B9%8B%E9%97%B4%E9%83%BD%E5%AD%98%E5%9C%A8%E8%B7%9D%E7%A6%BB%EF%BC%8C%E8%BF%94%E5%9B%9E%E6%95%B4%E6%A3%B5%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E6%9C%80%E5%A4%A7%E8%B7%9D%E7%A6%BB"><span class="nav-number">1.4.</span> <span class="nav-text">例题：给定一棵二叉树的头结点head，任何两个结点之间都存在距离，返回整棵二叉树的最大距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9A%E7%BB%99%E5%AE%9A%E4%B8%80%E6%A3%B5%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%A4%B4%E7%BB%93%E7%82%B9head%EF%BC%8C%E8%BF%94%E5%9B%9E%E8%BF%99%E6%A3%B5%E4%BA%8C%E5%8F%89%E6%A0%91%E4%B8%AD%E6%9C%80%E5%A4%A7%E7%9A%84%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E5%AD%90%E6%A0%91%E7%9A%84%E5%A4%B4%E7%BB%93%E7%82%B9"><span class="nav-number">1.5.</span> <span class="nav-text">例题：给定一棵二叉树的头结点head，返回这棵二叉树中最大的二叉搜索子树的头结点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98%EF%BC%9A%E6%B4%BE%E5%AF%B9%E7%9A%84%E6%9C%80%E5%A4%A7%E5%BF%AB%E4%B9%90%E5%80%BC%E9%97%AE%E9%A2%98"><span class="nav-number">1.5.1.</span> <span class="nav-text">例题：派对的最大快乐值问题</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Motto"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Motto</p>
+  <div class="site-description" itemprop="description">a blog about some record in life</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Mozartto" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Mozartto" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=1220883974@qq.com" title="E-Mail → https:&#x2F;&#x2F;mail.qq.com&#x2F;cgi-bin&#x2F;qm_share?t&#x3D;qm_mailme&amp;email&#x3D;1220883974@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Jerry21313800" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;Jerry21313800" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.quora.com/profile/Jerry-1020" title="Quora → https:&#x2F;&#x2F;www.quora.com&#x2F;profile&#x2F;Jerry-1020" rel="noopener" target="_blank"><i class="fab fa-quora fa-fw"></i>Quora</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/Mozartto" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+    
+    <div class="post-gallery-image">
+      <img src="/images/8.jpg" itemprop="contentUrl">
+    </div>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mozartto.cn/2019/08/23/%E9%80%92%E5%BD%92%E5%BA%8F%E7%9A%84%E6%9C%AC%E8%B4%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Motto">
+      <meta itemprop="description" content="a blog about some record in life">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Motto">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          二叉树的递归套路——理解递归序的本质
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-08-23 11:54:49" itemprop="dateCreated datePublished" datetime="2019-08-23T11:54:49+08:00">2019-08-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2019-11-12 18:23:41" itemprop="dateModified" datetime="2019-11-12T18:23:41+08:00">2019-11-12</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/computer/" itemprop="url" rel="index"><span itemprop="name">computer</span></a>
+        </span>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2019/08/23/%E9%80%92%E5%BD%92%E5%BA%8F%E7%9A%84%E6%9C%AC%E8%B4%A8/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2019/08/23/递归序的本质/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>6.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+            <div class="post-description">理解递归序的本质。高度结构化的coding，让你即便是个新手，也能把这个套路写出来。</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="二叉树的递归套路"><a href="#二叉树的递归套路" class="headerlink" title="二叉树的递归套路"></a>二叉树的递归套路</h2><p>woc…现在在图书馆二楼，脚冻僵了…法克…</p>
+<blockquote>
+<p>作者：肖棋耀</p>
+</blockquote>
+<p>好，下面我来讲一下如何打印一个二叉树（不是你们想像的那种写个递归遍历代码两三行）</p>
+<p>首先来看一下打印出来的二叉树是什么样子，横着的，每个孩子结点左右有箭头，箭头朝下代表右结点，箭头朝上代表左结点。H代表头结点</p>
+<p>打印顺序是右头左。</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20201217194332339.png" alt="image-20201217194332339" style="zoom:55%;" />
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">printTree</span><span class="token punctuation">(</span><span class="token class-name">Node</span> head<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Binary Tree:"</span><span class="token punctuation">)</span>
+    <span class="token function">printInOrder</span><span class="token punctuation">(</span>head<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">"H"</span><span class="token punctuation">,</span> <span class="token number">17</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+
+<span class="token comment">//String to参数的意思是当前结点的那个箭头</span>
+<span class="token comment">//height的意思是横着打印的时候结点前面预留的空格长度，空格长度与结点在树中的高度呈正相关</span>
+<span class="token comment">//len的意思是，不管长度是多少，我都搞出一个len长度的字符串打印出来，即统一认为值是17个空间</span>
+<span class="token comment">//我自己占多少位我预留好，前面空多少个空格出来跟我的高度相关</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">printInOrder</span><span class="token punctuation">(</span><span class="token class-name">Node</span> head<span class="token punctuation">,</span> <span class="token keyword">int</span> height<span class="token punctuation">,</span> <span class="token class-name">String</span> <span class="token keyword">to</span><span class="token punctuation">,</span> <span class="token keyword">int</span> len<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>head <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token function">printInorder</span><span class="token punctuation">(</span>head<span class="token punctuation">.</span>right<span class="token punctuation">,</span> height <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"v"</span><span class="token punctuation">,</span> len<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token class-name">String</span> val <span class="token operator">=</span> <span class="token keyword">to</span> <span class="token operator">+</span> head<span class="token punctuation">.</span>value <span class="token operator">+</span> <span class="token keyword">to</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> lenM <span class="token operator">=</span> val<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>         <span class="token comment">//中间部分数字占的长度</span>
+    <span class="token keyword">int</span> lenL <span class="token operator">=</span> <span class="token punctuation">(</span>len <span class="token operator">-</span> lenM<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>     <span class="token comment">//左侧部分占的长度</span>
+    <span class="token keyword">int</span> lenR <span class="token operator">=</span> len <span class="token operator">-</span> lenM <span class="token operator">-</span> lenL<span class="token punctuation">;</span>    <span class="token comment">//右侧部分占的长度</span>
+    val <span class="token operator">=</span> <span class="token function">getSpace</span><span class="token punctuation">(</span>lenL<span class="token punctuation">)</span> <span class="token operator">+</span> val <span class="token operator">+</span> <span class="token function">getSpace</span><span class="token punctuation">(</span>lenR<span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment">//我这个值要占的总长度，左+值+右</span>
+    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token function">getSpace</span><span class="token punctuation">(</span>height <span class="token operator">*</span> len<span class="token punctuation">)</span> <span class="token operator">+</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//根据高度先在前面输出空格，再在后面补上我这个值（左+值+右）</span>
+    <span class="token comment">//好累。。。不想写注释    //2021.1.21注释：啊这，你也太懒了吧，我现在写注释</span>
+    <span class="token comment">//getSpace函数自己实现</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<span id="more"></span>
+
+<h3 id="题目：二叉树结构如下定义："><a href="#题目：二叉树结构如下定义：" class="headerlink" title="题目：二叉树结构如下定义："></a>题目：二叉树结构如下定义：</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Class</span> <span class="token class-name">Node</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">V</span> value<span class="token punctuation">;</span>
+    <span class="token class-name">Node</span> left<span class="token punctuation">;</span>
+    <span class="token class-name">Node</span> right<span class="token punctuation">;</span>
+    <span class="token class-name">Node</span> parent<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>给你二叉树的某个结点，返回该结点的的后继结点（红黑树就是在普通二叉树上多加了一个指向父结点的指针）</p>
+<p>后继结点：中序遍历结果中后面的那个结点，最后一个结点的后继结点是null</p>
+<p>普遍的做法：先根据parent指针找到整棵树的头结点，然后根据头结点对整棵树进行中序遍历来寻找结点X的后继结点</p>
+<p>不管是先序中序还是后序，本质上都是递归序（上一讲讲过），都是每一个结点到达三次，时间复杂度都是O(N)</p>
+<p>假如我们有一种方法，能够直接找到一个结点的后继结点，如果此结点到其后继结点的距离为k，如果能把时间复杂度控制在O(k)那岂不是妙哉！</p>
+<h4 id="x的后继结点是其右树上的最左结点"><a href="#x的后继结点是其右树上的最左结点" class="headerlink" title="x的后继结点是其右树上的最左结点"></a>x的后继结点是其右树上的最左结点</h4><p>找某个结点的中序遍历中的后继：</p>
+<p>一直往上找，如果此结点是上一个结点的右孩子，就继续往上找，直到变成上一个结点的左孩子，上一个结点此时就是我们要找的后继</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20201217202549336.png" alt="image-20201217202549336" style="zoom:40%;" />
+
+<p>好困啊…不想更这个代码了。找中序遍历中的前驱结点也是这个思路，自己写。</p>
+<p>下面来讲一个有意思的题：在国外流行了一年多，从微软开始流行，到Facebook等FLAG大厂也喜欢问。</p>
+<p>请把一段纸条竖着放在桌子上，然后从纸条的下面向上方对折一次，压出折痕后展开。此时折痕是凹下去的，即折痕突起的方向指向纸条的背面。如果从纸条的下边向上方连续对折两次，压出折痕后展开，此时有三条折痕，从上到下依次是下折痕、下折痕和上折痕。</p>
+<p>给定一个输入参数N，代表纸条从下边向上方连续对折N次，请从上到下打印所有折痕的方向。</p>
+<p>有一个规律，你每次对折之后，在你前一次对折的折痕上方是凹折痕，下方是凸折痕</p>
+<p>所以你想从上到下打印所有折痕，就是下图中那棵树的中序遍历</p>
+<p>例如：N = 1时，打印down。N = 2时，打印down down up</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20201217205400523.png" alt="image-20201217205400523" style="zoom:40%;" />
+
+<p>就是一个二叉树的中序遍历，代码很简单，如下：</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20201217205500038.png" alt="image-20201217205500038" style="zoom:50%;" />
+
+<h3 id="二叉树的递归套路-1"><a href="#二叉树的递归套路-1" class="headerlink" title="二叉树的递归套路"></a>二叉树的递归套路</h3><p>可以解决面试中绝大多数的二叉树问他尤其是树型dp问题，绝大多数大到什么程度，95%以上</p>
+<p>本质是利用二叉树的便利性。本质就是在树上做动态规划。</p>
+<p>给定一个二叉树的头结点head，返回这颗二叉树是不是平衡二叉树</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Info</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token class-name">Boolean</span> isBalanced<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> height<span class="token punctuation">;</span>
+    
+    <span class="token keyword">public</span> <span class="token class-name">Info</span><span class="token punctuation">(</span>bollean b<span class="token punctuation">,</span> <span class="token keyword">int</span> h<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        isBalanced <span class="token operator">=</span> b<span class="token punctuation">;</span>
+        height <span class="token operator">=</span> h<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">//以X为头结点的树</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Info</span> <span class="token function">process2</span><span class="token punctuation">(</span><span class="token class-name">Node</span> <span class="token class-name">X</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token class-name">X</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Info</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//空树直接返回（空树是平衡二叉树）</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token class-name">Info</span> leftInfo <span class="token operator">=</span> <span class="token function">process2</span><span class="token punctuation">(</span><span class="token class-name">X</span><span class="token punctuation">.</span>left<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Info</span> rightInfo <span class="token operator">=</span> <span class="token function">process2</span><span class="token punctuation">(</span><span class="token class-name">X</span><span class="token punctuation">.</span>right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//左树高度是多少，左树是否平衡；右树高度是多少，右树是否平衡；两个信息都拽在手里</span>
+    <span class="token comment">//接下来只需要再生成出我的两个信息再返回整个函数就结束了</span>
+    <span class="token keyword">int</span> height <span class="token operator">=</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>leftInfo<span class="token punctuation">.</span>height<span class="token punctuation">,</span> rightInfo<span class="token punctuation">.</span>height<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword">boolean</span> isBalanced <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>leftInfo<span class="token punctuation">.</span>isBalanced <span class="token operator">||</span> <span class="token operator">!</span>rightInfo<span class="token punctuation">.</span>isBalanced <span class="token operator">||</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>leftInfo<span class="token punctuation">.</span>height <span class="token operator">-</span> right<span class="token punctuation">.</span>height<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        isBalanced <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">//左树或右树不平衡，或左右两子树高度差超过1，将当前树改为不平衡</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="二叉树的递归套路-2"><a href="#二叉树的递归套路-2" class="headerlink" title="二叉树的递归套路"></a>二叉树的递归套路</h3><ol>
+<li>假设以X结点为头，假设可以向X左树和X右树要任何信息</li>
+<li>在上一步的假设情况下，讨论以X为头结点的树，得到答案的可能性（很重要）</li>
+<li>列出所有可能性后，确定到底需要向左树和右树要什么样的信息</li>
+<li>把左树信息和右树信息求全集，就是任何一颗子树都需要返回的信息S</li>
+<li>递归函数都返回S，每一棵子树都这么要求</li>
+<li>写代码，在代码中考虑如何把左树的信息和右树的信息整合出整棵树的信息</li>
+</ol>
+<h3 id="例题：给定一棵二叉树的头结点head，任何两个结点之间都存在距离，返回整棵二叉树的最大距离"><a href="#例题：给定一棵二叉树的头结点head，任何两个结点之间都存在距离，返回整棵二叉树的最大距离" class="headerlink" title="例题：给定一棵二叉树的头结点head，任何两个结点之间都存在距离，返回整棵二叉树的最大距离"></a>例题：给定一棵二叉树的头结点head，任何两个结点之间都存在距离，返回整棵二叉树的最大距离</h3><p>两个节点之间的距离就是两个结点之间的结点数</p>
+<ol>
+<li>得到答案的可能性：<ol>
+<li>最大距离与头结点X无关<ul>
+<li>左树上的最大距离与右树上的最大距离两个取其中之一的max</li>
+</ul>
+</li>
+<li>最大距离与头结点X有关<ul>
+<li>X左树上离自己最远的点（左树的高度）经过X到X右树上离自己最远的点，即左高+X自己+右高</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>需要左右树分别提供其高度以及其最大距离</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">maxDistance2</span><span class="token punctuation">(</span><span class="token class-name">Node</span> head<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token function">process</span><span class="token punctuation">(</span>head<span class="token punctuation">)</span><span class="token punctuation">.</span>maxDistance<span class="token punctuation">;</span> <span class="token comment">//主函数只要你整棵树的最大距离</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Info</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> maxDistance<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> height<span class="token punctuation">;</span>
+    
+    <span class="token keyword">public</span> <span class="token function">info</span><span class="token punctuation">(</span><span class="token keyword">int</span> dis<span class="token punctuation">,</span> <span class="token keyword">int</span> h<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        maxDistance <span class="token operator">=</span> dis<span class="token punctuation">;</span>
+        height <span class="token operator">=</span> h<span class="token punctuation">;</span>  <span class="token comment">//需要提供的1就这两个信息</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">//返回的是左右子树提供的信息</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Info</span> <span class="token function">process</span><span class="token punctuation">(</span><span class="token class-name">Node</span> <span class="token class-name">X</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token class-name">X</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Info</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token class-name">Info</span> leftInfo <span class="token operator">=</span> <span class="token function">process</span><span class="token punctuation">(</span><span class="token class-name">X</span><span class="token punctuation">.</span>left<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token class-name">Info</span> rightInfo <span class="token operator">=</span> <span class="token function">process</span><span class="token punctuation">(</span><span class="token class-name">X</span><span class="token punctuation">.</span>right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token comment">//返回完了左右子树的信息，开始加工我自己的信息</span>
+    <span class="token keyword">int</span> height <span class="token operator">=</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>leftInfo<span class="token punctuation">.</span>height<span class="token punctuation">,</span> rightInfo<span class="token punctuation">.</span>height<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> maxDistance <span class="token operator">=</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>
+        <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>leftInfo<span class="token punctuation">.</span>maxDistance<span class="token punctuation">,</span> rightInfo<span class="token punctuation">.</span>maxDistance<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        leftInfo<span class="token punctuation">.</span>height <span class="token operator">+</span> rightInfo<span class="token punctuation">.</span>height <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Info</span><span class="token punctuation">(</span>maxDistance<span class="token punctuation">,</span> height<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//加工完我自己的信息，就可以把左右子树的信息丢掉了。下一次之间给我的父结点返回我自己的信息。这就是动态规划的本质。跟跑个递归是一样的</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="例题：给定一棵二叉树的头结点head，返回这棵二叉树中最大的二叉搜索子树的头结点"><a href="#例题：给定一棵二叉树的头结点head，返回这棵二叉树中最大的二叉搜索子树的头结点" class="headerlink" title="例题：给定一棵二叉树的头结点head，返回这棵二叉树中最大的二叉搜索子树的头结点"></a>例题：给定一棵二叉树的头结点head，返回这棵二叉树中最大的二叉搜索子树的头结点</h3><p>搜索二叉树(BST)：整棵树上没有重复值，左子树结点永远比当前结点值小，右子树结点永远比当前结点值大</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210121145019716.png" alt="image-20210121145019716" style="zoom:67%;" />
+
+<p>大分类：</p>
+<ol>
+<li><p>与X无关</p>
+<ul>
+<li>就是你最终找的这棵搜索二叉树不以X为头</li>
+<li>就是在左右子树上单独找满足条件的最大二叉搜索树</li>
+</ul>
+</li>
+<li><p>与X有关</p>
+<ul>
+<li>左树和右树都是搜索二叉树</li>
+<li>左max &lt; x，右min &gt; x，这些条件都必须全部满足，有一点破坏，就只存在情况1</li>
+</ul>
+</li>
+<li><p>需要左右子树提供的信息</p>
+<ol>
+<li>左子树：最大搜索子树的size、boolean isAllBst、左子树上的最大值max</li>
+<li>右子树：最大搜索子树的size、boolean isAllBst、有子树上的最小值min</li>
+</ol>
+</li>
+<li><p>这种属于左树上的要求和右树上的要求不一样的，但是我想一劳永逸，就是不用区分左右子树，所以你需要给我返回四个信息：</p>
+<ol>
+<li>最大搜索子树的size</li>
+<li>整体是否为搜索二叉树</li>
+<li>整棵子树的最大值</li>
+<li>整棵子树的最小值</li>
+</ol>
+</li>
+</ol>
+<p>所以求全集：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Info</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> isAllBst<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> maxSubBstSize<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> min<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> max<span class="token punctuation">;</span>
+    
+    <span class="token keyword">public</span> <span class="token class-name">Info</span><span class="token punctuation">(</span><span class="token keyword">boolean</span> isAllBst<span class="token punctuation">,</span> <span class="token keyword">int</span> size<span class="token punctuation">,</span> <span class="token keyword">int</span> min<span class="token punctuation">,</span> <span class="token keyword">int</span> max<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>isAllBst <span class="token operator">=</span> isAllBst<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>maxSubBstSize <span class="token operator">=</span> size<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>min <span class="token operator">=</span> min<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>max <span class="token operator">=</span> max<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Info</span> <span class="token function">process</span><span class="token punctuation">(</span><span class="token class-name">Node</span> head<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token class-name">X</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token class-name">Info</span> leftInfo <span class="token operator">=</span> <span class="token function">process</span><span class="token punctuation">(</span><span class="token class-name">X</span><span class="token punctuation">.</span>left<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">Info</span> rightInfo <span class="token operator">=</span> <span class="token function">process</span><span class="token punctuation">(</span><span class="token class-name">X</span><span class="token punctuation">.</span>right<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token comment">//接下来加工完我自己的四个信息就可以返回了</span>
+    
+    <span class="token keyword">int</span> min <span class="token operator">=</span> <span class="token class-name">X</span><span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> max <span class="token operator">=</span> <span class="token class-name">X</span><span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+    
+    <span class="token keyword">if</span><span class="token punctuation">(</span>leftInfo <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        min <span class="token operator">=</span>  <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>min<span class="token punctuation">,</span> leftInfo<span class="token punctuation">.</span>min<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        max <span class="token operator">=</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>max<span class="token punctuation">,</span> leftInfo<span class="token punctuation">.</span>max<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    
+     <span class="token keyword">if</span><span class="token punctuation">(</span>rightInfo <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        min <span class="token operator">=</span>  <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>min<span class="token punctuation">,</span> rightInfo<span class="token punctuation">.</span>min<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        max <span class="token operator">=</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>max<span class="token punctuation">,</span> rightInfo<span class="token punctuation">.</span>max<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">//上面两个if是在左右子树中分别找出最大值和最小值，令其成为当前树的最大/最小值</span>
+    <span class="token comment">//有关min和max的加工就加工完了</span>
+   
+    <span class="token comment">//先说满足条件1，与x无关的情况（不满足条件2则必满足条件1</span>
+    <span class="token keyword">int</span> maxSubBstSize <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token comment">//先默认整棵树的最大二叉搜索树的大小是0</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>leftInfo <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        maxSubBstSize <span class="token operator">=</span> leftInfo<span class="token punctuation">.</span>maxSubSize<span class="token punctuation">;</span><span class="token comment">//先把左树的最大搜索子树值赋给当前树</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>rightInfo <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        maxSubBstSize <span class="token operator">=</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>maxSubBstSize<span class="token punctuation">,</span> right<span class="token punctuation">.</span>maxSubBstSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//比较右树的最大值和刚才取得的最大值</span>
+    <span class="token punctuation">&#125;</span>
+    
+    <span class="token keyword">boolean</span> isAllBst <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>  <span class="token comment">//满足这个条件证明其满足条件2，否则满足条件1</span>
+    <span class="token comment">//什么样的情况会成立条件2</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>
+    
+    <span class="token comment">//左树整体是搜索二叉树</span>
+    <span class="token punctuation">(</span>leftInfo <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token boolean">true</span> <span class="token operator">:</span> leftInfo<span class="token punctuation">.</span>isAllBst<span class="token punctuation">)</span>  <span class="token comment">//这个地方容易误解，注意这个括号里只有判断条件，没有赋值语句</span>
+        <span class="token operator">&amp;&amp;</span>
+    <span class="token comment">//右树整体是搜索二叉树</span>
+    <span class="token punctuation">(</span>rightInfo <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token boolean">true</span> <span class="token operator">:</span> rightInfo<span class="token punctuation">.</span>isAllBst<span class="token punctuation">)</span> 
+    	<span class="token operator">&amp;&amp;</span>
+    <span class="token comment">//左树最大值小于X的值</span>
+    <span class="token punctuation">(</span>leftInfo <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token boolean">true</span> <span class="token operator">:</span> leftInfo<span class="token punctuation">.</span>max <span class="token operator">&lt;</span> <span class="token class-name">X</span><span class="token punctuation">.</span>value<span class="token punctuation">)</span>
+        <span class="token operator">&amp;&amp;</span>
+    <span class="token comment">//右树最大值大于X的值</span>
+    <span class="token punctuation">(</span>rightInfo <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token boolean">true</span> <span class="token operator">:</span> rightInfo<span class="token punctuation">.</span>max <span class="token operator">></span> <span class="token class-name">X</span><span class="token punctuation">.</span>value<span class="token punctuation">)</span>
+        <span class="token comment">//以上四个条件头成立的情况下</span>
+        
+    <span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        maxSubBstSize <span class="token operator">=</span> 
+            <span class="token punctuation">(</span>leftInfo <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token number">0</span> <span class="token operator">:</span> leftInfo<span class="token punctuation">.</span>maxSubBstSize<span class="token punctuation">)</span>
+            <span class="token operator">+</span>
+            <span class="token punctuation">(</span> rightInfo <span class="token operator">==</span> <span class="token keyword">null</span> <span class="token operator">?</span> <span class="token number">0</span> <span class="token operator">:</span> rightInfo<span class="token punctuation">.</span>maxSubBstSize<span class="token punctuation">)</span>
+            <span class="token operator">+</span>
+            <span class="token number">1</span><span class="token punctuation">;</span>
+            isAllBst <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Info</span><span class="token punctuation">(</span>isAllBst<span class="token punctuation">,</span> maxSubBstSize<span class="token punctuation">,</span> min<span class="token punctuation">,</span> max<span class="token punctuation">)</span>ñ
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="例题：派对的最大快乐值问题"><a href="#例题：派对的最大快乐值问题" class="headerlink" title="例题：派对的最大快乐值问题"></a>例题：派对的最大快乐值问题</h4><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//员工的信息定义如下（这是一棵多叉树）</span>
+<span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> happy<span class="token punctuation">;</span> <span class="token comment">//这名员工可以带来的快乐值</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">></span></span> nexts<span class="token punctuation">;</span> <span class="token comment">//这名员工有哪些直接下级   </span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">//规定好不存在一个上级是另一个下级的下级的情况</span>
+<span class="token comment">//每一个人都只有唯一的一个直接上级</span>
+<span class="token comment">//所以整棵树可以写成一个多叉树结构</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>现在，公司要办party，你可以决定哪些员工来，哪些员工不来，规则：</p>
+<ol>
+<li>如果某个员工来了，那么这个员工的所有直接下级都不能来</li>
+<li>派对整体的快乐值是所有到场员工快乐值的累加</li>
+<li>你的目标是让派对的整体快乐值尽量大</li>
+</ol>
+<p>给定一棵多叉树的头结点boss，请返回派对的最大快乐值</p>
+<p>假设以X为头结点，可以跟我的子树要信息，得到答案的可能性是什么？——X来和X不来。即不管你底下的树是什么样子，你发请柬的答案都可以分为两类，发了和没发。所有的答案都只能分为这两类</p>
+<ol>
+<li>X来<ul>
+<li>需要获得的信息：x的happy值，以x的子结点为根的树的所有快乐值的总和</li>
+<li><img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210121175153289.png" alt="image-20210121175153289"></li>
+</ul>
+</li>
+<li>X不来</li>
+</ol>
+<ul>
+<li><p>0 + </p>
+<p>max(x子树a来的最大快乐值，a不来情况下的最大快乐值）</p>
+<p>+</p>
+<p>max(x子树b来的最大快乐值，b不来情况下的最大快乐值）</p>
+<p>+</p>
+<p>max(x子树c来的最大快乐值，c不来情况下的最大快乐值）</p>
+</li>
+</ul>
+<p>所以所有的子树需要返回两个信息</p>
+<ol>
+<li>这棵子树头结点来的情况下它能带来的最大快乐值</li>
+<li>这棵子树头结点不来的情况下它能带来的最大快乐值</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> info <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> yes<span class="token punctuation">;</span> <span class="token comment">//来时的最大快乐值</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> no<span class="token punctuation">;</span>  <span class="token comment">//不来时的最大快乐值</span>
+    
+    <span class="token keyword">public</span> <span class="token class-name">Info</span><span class="token punctuation">(</span><span class="token keyword">int</span> yes<span class="token punctuation">,</span> <span class="token keyword">int</span> no<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>yes <span class="token operator">=</span> yes<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>no <span class="token operator">=</span> no<span class="token punctuation">;</span>  
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">//需要返回的信息：这个结点来和不来时能带来的快乐值</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">Info</span> <span class="token function">process2</span><span class="token punctuation">(</span><span class="token class-name">Employee</span> x<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span>nexts<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">//最基层的员工</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Info</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span>happy<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">int</span> yes <span class="token operator">=</span> x<span class="token punctuation">.</span>happy<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> no <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">Employee</span> next <span class="token operator">:</span> x<span class="token punctuation">.</span>nexts<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Info</span> nextInfo <span class="token operator">=</span> <span class="token function">process2</span><span class="token punctuation">(</span>next<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//对每一个下级员工，我都调用递归函数要来它的信息</span>
+        yes <span class="token operator">+=</span> nextInfo<span class="token punctuation">.</span>no<span class="token punctuation">;</span> <span class="token comment">//如果我的头结点来了，对每棵子树，我只能获得它不来状况下的最大快乐值</span>
+        no <span class="token operator">+=</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>nextInfo<span class="token punctuation">.</span>yes<span class="token punctuation">,</span> nextInfo<span class="token punctuation">.</span>no<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//如果我不来，就把每棵子树来和不来都做max，累加到我的no上</span>
+        <span class="token comment">//no的时候我的子树可来，可不来</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Info</span><span class="token punctuation">(</span>yes<span class="token punctuation">,</span> no<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+  <span class="token comment">//复杂度是O(n)，递归套路一个结点最多经过3次</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>高度结构化的coding，让你即便是个新手，也能把这个套路写出来。左神tql。</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Motto WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Motto Alipay">
+        <span>Alipay</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Motto
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mozartto.cn/2019/08/23/%E9%80%92%E5%BD%92%E5%BA%8F%E7%9A%84%E6%9C%AC%E8%B4%A8/" title="二叉树的递归套路——理解递归序的本质">https://mozartto.cn/2019/08/23/递归序的本质/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="https://twitter.com/Jerry21313800">
+          <span class="icon">
+            <i class="fab fa-twitter"></i>
+          </span>
+
+          <span class="label">Twitter</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/08/21/%E4%BA%8C%E5%8F%89%E6%A0%91%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95/" rel="prev" title="二叉树基本算法">
+                  <i class="fa fa-chevron-left"></i> 二叉树基本算法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/08/27/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E4%B8%8E%E9%9A%8F%E6%9C%BA%E5%BF%AB%E6%8E%92/" rel="next" title="归并排序与随机快排">
+                  归并排序与随机快排 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">黔ICP备 2021003893 </a>
+      <img src="/images/beian.png"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2021003893" rel="noopener" target="_blank">黔网公安备 2021003893 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fas fa-battery-full"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Motto</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>Symbols count total: </span>
+    <span title="Symbols count total">202k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>Reading time total &asymp;</span>
+    <span title="Reading time total">3:04</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{&quot;enable&quot;:true,&quot;appid&quot;:&quot;cyvsVbDPQ&quot;,&quot;appkey&quot;:&quot;850d54eeada1b129a1fa523dedb189ff&quot;}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>
