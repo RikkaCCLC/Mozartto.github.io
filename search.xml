@@ -478,7 +478,7 @@
 <p>头右左的打印顺序如下：你倒过来看(从右往左看，这不就是逆序吗，左右头)</p>
 <img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20201207105807624.png" alt="image-20201207105807624" style="zoom:40%;" />
 
-<p>打印的时候，我把它单独放到一个另外的栈里去，我不打印，整个过程处理完之后，我再把另外收集的这个栈中的元素从头弹出来，不就实现后续打印了吗。所以大家看代码：</p>
+<p>打印的时候，我把它单独放到一个另外的栈里去，我不打印，整个过程处理完之后，我再把另外收集的这个栈中的元素从头弹出来，不就实现后序打印了吗。所以大家看代码：</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">pos1</span><span class="token punctuation">(</span><span class="token class-name">Node</span> head<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">//后序遍历代码</span>
     <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"pos-order"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">if</span><span class="token punctuation">(</span>head <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -532,7 +532,7 @@
     <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token string">"pos - order: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token keyword">if</span><span class="token punctuation">(</span>h <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
         <span class="token class-name">Stack</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Node</span><span class="token punctuation">></span></span> stack <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Stack</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Node</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        stack<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token class-name">Node</span> c <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
         <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span>stack<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
             c <span class="token operator">=</span> stack<span class="token punctuation">.</span><span class="token function">peek</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -586,7 +586,7 @@
         <span class="token keyword">int</span> max <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>  <span class="token comment">//max就是你更新的所有层的宽度中的最大值</span>
         <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span>queue<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
             <span class="token class-name">Node</span> cur <span class="token operator">=</span>  queue<span class="token punctuation">.</span><span class="token function">poll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//当前队头结点出队并赋给cur(current:当前的)</span>
-            <span class="token keyword">int</span> curNodeLevel <span class="token operator">=</span> levelMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>cur<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//从levelMao中把当前结点在的层数给取出来</span>
+            <span class="token keyword">int</span> curNodeLevel <span class="token operator">=</span> levelMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>cur<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//从levelMap中把当前结点在的层数给取出来</span>
             <span class="token keyword">if</span><span class="token punctuation">(</span>cur<span class="token punctuation">.</span>left <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
                 levelMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>cur<span class="token punctuation">.</span>left<span class="token punctuation">,</span> curNodeLevel <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//如果左孩子不为空，加入左孩子并标记左孩子所处																						的层数</span>
                 queue<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>cur<span class="token punctuation">.</span>left<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//左孩子入队</span>
@@ -730,13 +730,13 @@
 <span class="token comment">//这段递归代码很好理解，上一篇文章中解析过一个递归行为，和这个相似。</span>
 
 
-<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">merge</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr<span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token class-name">L</span><span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token class-name">R</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">merge</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> arr<span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token class-name">L</span><span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token class-name">M</span><span class="token punctuation">,</span> <span class="token keyword">int</span> <span class="token class-name">R</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> help <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token class-name">R</span> <span class="token operator">-</span> <span class="token class-name">L</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">//这个help数组的长度就是L到R之间的元素个数,用来存放合并之后的数组元素</span>
     <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>                      <span class="token comment">//i是拿给help数组使用的</span>
     <span class="token keyword">int</span> p1 <span class="token operator">=</span> <span class="token class-name">L</span><span class="token punctuation">;</span>                    <span class="token comment">//左边使用的指针</span>
     <span class="token keyword">int</span> p2 <span class="token operator">=</span> <span class="token class-name">M</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>                <span class="token comment">//右边使用的指针</span>
     <span class="token keyword">while</span><span class="token punctuation">(</span>p1 <span class="token operator">&lt;</span> <span class="token class-name">M</span> <span class="token operator">&amp;&amp;</span> p2 <span class="token operator">&lt;</span> <span class="token class-name">R</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        help<span class="token punctuation">[</span>i<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>p1<span class="token punctuation">]</span> <span class="token operator">&lt;</span> arr<span class="token punctuation">[</span>p2<span class="token punctuation">]</span> <span class="token operator">?</span> arr<span class="token punctuation">[</span>p1<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">:</span> arr<span class="token punctuation">[</span>p2<span class="token operator">++</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">//这一行代码搞定了数组合并这个看起来貌似很                                                                                             复杂的问题</span>
+        help<span class="token punctuation">[</span>i<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>p1<span class="token punctuation">]</span> <span class="token operator">&lt;</span> arr<span class="token punctuation">[</span>p2<span class="token punctuation">]</span> <span class="token operator">?</span> arr<span class="token punctuation">[</span>p1<span class="token operator">++</span><span class="token punctuation">]</span> <span class="token operator">:</span> arr<span class="token punctuation">[</span>p2<span class="token operator">++</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">//这一行代码搞定了数组合并这个看起来貌似很复杂的问题                                                                                             </span>
     <span class="token punctuation">&#125;</span>
     <span class="token comment">//要么p1越界了，要么p2越界了，上面的while循环就会break</span>
     <span class="token keyword">while</span><span class="token punctuation">(</span>p1 <span class="token operator">&lt;=</span> <span class="token class-name">M</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
@@ -1191,6 +1191,95 @@
       </categories>
   </entry>
   <entry>
+    <title>gradient descent</title>
+    <url>/2020/10/20/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/</url>
+    <content><![CDATA[<h3 id="机器学习"><a href="#机器学习" class="headerlink" title="机器学习"></a>机器学习</h3><p>——Note4：gradient descent</p>
+<p>先复习一下gradient descent的内容，如下图：</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210122180205343.png" alt="image-20210122180205343" style="zoom:50%;" />
+
+<p>其中η是learning rate</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210122181049006.png" alt="image-20210122181049006" style="zoom:50%;" />
+
+<h3 id="how-to-tuning-调整-learning-rate"><a href="#how-to-tuning-调整-learning-rate" class="headerlink" title="how to tuning(调整)learning rate"></a>how to tuning(调整)learning rate</h3><p>learning rate调的太小，gradient descent进行得太慢；调得太大，梯度下降可能会卡住甚至上升，参考下图的情况，不同情况不一样：</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210122181535183.png" alt="image-20210122181535183" style="zoom:50%;" />
+
+<p>在这里再提示一下哈，调节gradient descent的目的是为了是loss function降到最低，也就是线性回归后的损失最小。</p>
+<p>tensorflow迭代可以选择显示loss和精确度甚至是你自定义的函数。c的话就要靠自己编程了。——来自弹幕</p>
+<h3 id="调节learning-rate的几个小技巧："><a href="#调节learning-rate的几个小技巧：" class="headerlink" title="调节learning rate的几个小技巧："></a>调节learning rate的几个小技巧：</h3><p>让η随着梯度下降的过程而减小，因为一开始距离最低点很远，后面慢慢地接近</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123101837557.png" alt="image-20210123101837557" style="zoom:50%;" />
+
+<p>learning rate这种东西不是one-size-fits-all的，不同的参数需要给它不同的learning rate，那这件事情其实是有几个小技巧的，最容易实现也是最简单的叫做adagrad(自适应梯度算法)</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123105648734.png" alt="image-20210123105648734" style="zoom:50%;" />
+
+<p>vanilla原意思是香草，在西方香草很常见，所以vanilla代表普通、普遍、基本的意思</p>
+<p>vanilla 普通的，合起来就是  普通梯度下降</p>
+<p>g是偏微分，对于第一个公式没有看懂的同学可以去看一下我写的笔记二里面的梯度下降公式，回顾一下就想起来了。</p>
+<p>σt的意思是之前所有偏微分g的均方根，t不是次方，而是角标，第t个σ</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123105546103.png" alt="image-20210123105546103" style="zoom:50%;" />
+
+<p>这个公式最终可以化成最下面那个那样，根号下t+1被约掉了</p>
+<p>adaptive learning rate 其实有很多种方法，adagrad只是其中的一种方法之一，但这些方法都以ada开头</p>
+<h3 id="adagard"><a href="#adagard" class="headerlink" title="adagard"></a>adagard</h3><p>下面继续解释adagrad：</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123111701467.png" alt="image-20210123111701467" style="zoom:50%;" />
+
+<p>使用这种方法可以防止梯度爆炸，就是跨度越来越大</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123110406138.png" alt="image-20210123110406138" style="zoom:50%;" />
+
+<p>我想在这里对这一节的内容做一个总结：这一节到底在讲什么呢？首先，根据梯度下降公式，我们可以得出随着gradient的进行，梯度下降的程度是越来越陡，这样可能会造成一个问题，就是错过loss function的最低点。为了防止这种梯度爆炸，我们需要调节偏微分g前面的参数learning rate，如何调节呢？learning rate不可能 one-fits-all，所以我们在前面加上和自变量t有关的式子，同时再乘上一个σ，发现约掉以后η就变成了根号下g的平方的和。因为在loss function接近最低点时，我们需要让gradient过程进行得越来越慢，才能保证loss function降到最低点。那么分母上乘以一个根号下g平方项的和，就可以帮助我们实现这种效果。那为什么要这样乘呢？</p>
+<p>下面这几张图直接绝了好吧，醍醐灌顶：</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123113030484.png" alt="image-20210123113030484" style="zoom:50%;" />
+
+<p>比较不同参数时，发现距离越远微分值越大不成立，所以我们其实要把二次微分考虑进来：</p>
+<p>这个其实叫二阶最优化算法，在花书的第58页上有，也叫牛顿迭代法——来自弹幕</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123113511656.png" alt="image-20210123113511656" style="zoom:50%;" />
+
+<p>那这个方法和adagrad的关系是什么呢？</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123113952410.png" alt="image-20210123113952410" style="zoom:50%;" />
+
+<p>当我们在一次微分的图上随便取一个sample时，它并不能反映二次微分的大小，但当我们取到了足够多的sample时，它其实可以反应二次微分的大小(一次微分的变化率)，那么adagrad分母上所做的事情其实就是在去、取足够多的，这样分母就可以反映出二次微分的大小。</p>
+<h3 id="Gradient-Descent"><a href="#Gradient-Descent" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h3><h4 id="tip-2：stochastic-gradient-descent-随机梯度下降-SGD"><a href="#tip-2：stochastic-gradient-descent-随机梯度下降-SGD" class="headerlink" title="tip 2：stochastic gradient descent 随机梯度下降(SGD)"></a>tip 2：stochastic gradient descent 随机梯度下降(SGD)</h4><img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123114653351.png" alt="image-20210123114653351" style="zoom:50%;" />
+
+<p>随机的很快，每次只算一个，上面的梯度下降每次要算所有的函数的loss</p>
+<p>随机梯度下降不一定按gradient建议我们的方向去走，但是它的速度很快</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123120248542.png" alt="image-20210123120248542" style="zoom:50%;" />
+
+
+
+<h4 id="tip3-Feature-Scaling-特征缩放"><a href="#tip3-Feature-Scaling-特征缩放" class="headerlink" title="tip3 Feature Scaling(特征缩放)"></a>tip3 Feature Scaling(特征缩放)</h4><img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123120357726.png" alt="image-20210123120357726" style="zoom:50%;" />
+
+<p> 假设x1和x2是宝可梦的两个不同特征值，一个是cp值，一个是hp值，从图1中可以发现x1和x2的变化范围相差较大，这个时候就要对他们进行特征缩放，使它们的变化范围大致相同。为什么要这么做呢？</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123120229975.png" alt="image-20210123120229975" style="zoom:50%;" />
+
+<p>第一个图，你拐了一个弯，你不会指向最低点去走，但是第二图中，如果它真的是一个正圆的话，你不管在哪个位置，你都会直接向着圆心走，可以提高效率。</p>
+<p>在之前讲gradient descent时讲到了这样一个图：</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210122110249551.png" alt="image-20210122110249551" style="zoom:50%;" />
+
+<p>把前面的二维图放在三维进行gradient descent大概就是这样。</p>
+<p>那feature scaling的方法有很多种，常见的做法是下面这种：</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123121450486.png" alt="image-20210123121450486" style="zoom:50%;" />
+
+<p>mean是平均值，standard deviation是标准差</p>
+<p><strong>接下来讲一点理论的东西，为什么gradient descent会work，它背后的理论基础是什么？</strong></p>
+<p>在进入正题之前，给大家一个<strong>warning of math</strong>，这个部分没有听懂也没关系，明天的太阳依旧会升起</p>
+<p>optimization problem：最优化问题    </p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123161213604.png" alt="image-20210123161213604" style="zoom:50%;" />
+
+<p>使用Taylor series 证明了gradient descent 过程的来源</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123161330200.png" alt="image-20210123161330200" style="zoom:50%;" />
+
+<p>you can consider the second order term, e.g Newton’s method.</p>
+<p>梯度下降的局限性：梯度消失</p>
+<p>当梯度消失的时候，你不一定就接近了local minima，有可能 loss function 还在高原地区，比如下面这张图：</p>
+<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123162225658.png" alt="image-20210123162225658" style="zoom:50%;" />
+
+<p>而且你也不知道你的 local minima 是不是 global minima。</p>
+<p>这是一个有意思的问题，下一节学习最优化。</p>
+]]></content>
+      <categories>
+        <category>computer</category>
+      </categories>
+  </entry>
+  <entry>
     <title>比较器与堆</title>
     <url>/2019/11/23/%E6%AF%94%E8%BE%83%E5%99%A8%E4%B8%8E%E5%A0%86/</url>
     <content><![CDATA[<h3 id="比较器与堆"><a href="#比较器与堆" class="headerlink" title="比较器与堆"></a>比较器与堆</h3><p>首先回顾一点，希望大家不要忘了：为什么推荐对数器？如果你代码量大，自己捋一遍看那得看多久啊，对数器检查一下更方便。实在看不下去了赶紧写对数器验，自己捋一遍人捋没了倒时候。</p>
@@ -1427,95 +1516,6 @@
 ]]></content>
       <categories>
         <category>life</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>gradient descent</title>
-    <url>/2020/10/20/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B04/</url>
-    <content><![CDATA[<h3 id="机器学习"><a href="#机器学习" class="headerlink" title="机器学习"></a>机器学习</h3><p>——Note4：gradient descent</p>
-<p>先复习一下gradient descent的内容，如下图：</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210122180205343.png" alt="image-20210122180205343" style="zoom:50%;" />
-
-<p>其中η是learning rate</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210122181049006.png" alt="image-20210122181049006" style="zoom:50%;" />
-
-<h3 id="how-to-tuning-调整-learning-rate"><a href="#how-to-tuning-调整-learning-rate" class="headerlink" title="how to tuning(调整)learning rate"></a>how to tuning(调整)learning rate</h3><p>learning rate调的太小，gradient descent进行得太慢；调得太大，梯度下降可能会卡住甚至上升，参考下图的情况，不同情况不一样：</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210122181535183.png" alt="image-20210122181535183" style="zoom:50%;" />
-
-<p>在这里再提示一下哈，调节gradient descent的目的是为了是loss function降到最低，也就是线性回归后的损失最小。</p>
-<p>tensorflow迭代可以选择显示loss和精确度甚至是你自定义的函数。c的话就要靠自己编程了。——来自弹幕</p>
-<h3 id="调节learning-rate的几个小技巧："><a href="#调节learning-rate的几个小技巧：" class="headerlink" title="调节learning rate的几个小技巧："></a>调节learning rate的几个小技巧：</h3><p>让η随着梯度下降的过程而减小，因为一开始距离最低点很远，后面慢慢地接近</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123101837557.png" alt="image-20210123101837557" style="zoom:50%;" />
-
-<p>learning rate这种东西不是one-size-fits-all的，不同的参数需要给它不同的learning rate，那这件事情其实是有几个小技巧的，最容易实现也是最简单的叫做adagrad(自适应梯度算法)</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123105648734.png" alt="image-20210123105648734" style="zoom:50%;" />
-
-<p>vanilla原意思是香草，在西方香草很常见，所以vanilla代表普通、普遍、基本的意思</p>
-<p>vanilla 普通的，合起来就是  普通梯度下降</p>
-<p>g是偏微分，对于第一个公式没有看懂的同学可以去看一下我写的笔记二里面的梯度下降公式，回顾一下就想起来了。</p>
-<p>σt的意思是之前所有偏微分g的均方根，t不是次方，而是角标，第t个σ</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123105546103.png" alt="image-20210123105546103" style="zoom:50%;" />
-
-<p>这个公式最终可以化成最下面那个那样，根号下t+1被约掉了</p>
-<p>adaptive learning rate 其实有很多种方法，adagrad只是其中的一种方法之一，但这些方法都以ada开头</p>
-<h3 id="adagard"><a href="#adagard" class="headerlink" title="adagard"></a>adagard</h3><p>下面继续解释adagrad：</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123111701467.png" alt="image-20210123111701467" style="zoom:50%;" />
-
-<p>使用这种方法可以防止梯度爆炸，就是跨度越来越大</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123110406138.png" alt="image-20210123110406138" style="zoom:50%;" />
-
-<p>我想在这里对这一节的内容做一个总结：这一节到底在讲什么呢？首先，根据梯度下降公式，我们可以得出随着gradient的进行，梯度下降的程度是越来越陡，这样可能会造成一个问题，就是错过loss function的最低点。为了防止这种梯度爆炸，我们需要调节偏微分g前面的参数learning rate，如何调节呢？learning rate不可能 one-fits-all，所以我们在前面加上和自变量t有关的式子，同时再乘上一个σ，发现约掉以后η就变成了根号下g的平方的和。因为在loss function接近最低点时，我们需要让gradient过程进行得越来越慢，才能保证loss function降到最低点。那么分母上乘以一个根号下g平方项的和，就可以帮助我们实现这种效果。那为什么要这样乘呢？</p>
-<p>下面这几张图直接绝了好吧，醍醐灌顶：</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123113030484.png" alt="image-20210123113030484" style="zoom:50%;" />
-
-<p>比较不同参数时，发现距离越远微分值越大不成立，所以我们其实要把二次微分考虑进来：</p>
-<p>这个其实叫二阶最优化算法，在花书的第58页上有，也叫牛顿迭代法——来自弹幕</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123113511656.png" alt="image-20210123113511656" style="zoom:50%;" />
-
-<p>那这个方法和adagrad的关系是什么呢？</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123113952410.png" alt="image-20210123113952410" style="zoom:50%;" />
-
-<p>当我们在一次微分的图上随便取一个sample时，它并不能反映二次微分的大小，但当我们取到了足够多的sample时，它其实可以反应二次微分的大小(一次微分的变化率)，那么adagrad分母上所做的事情其实就是在去、取足够多的，这样分母就可以反映出二次微分的大小。</p>
-<h3 id="Gradient-Descent"><a href="#Gradient-Descent" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h3><h4 id="tip-2：stochastic-gradient-descent-随机梯度下降-SGD"><a href="#tip-2：stochastic-gradient-descent-随机梯度下降-SGD" class="headerlink" title="tip 2：stochastic gradient descent 随机梯度下降(SGD)"></a>tip 2：stochastic gradient descent 随机梯度下降(SGD)</h4><img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123114653351.png" alt="image-20210123114653351" style="zoom:50%;" />
-
-<p>随机的很快，每次只算一个，上面的梯度下降每次要算所有的函数的loss</p>
-<p>随机梯度下降不一定按gradient建议我们的方向去走，但是它的速度很快</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123120248542.png" alt="image-20210123120248542" style="zoom:50%;" />
-
-
-
-<h4 id="tip3-Feature-Scaling-特征缩放"><a href="#tip3-Feature-Scaling-特征缩放" class="headerlink" title="tip3 Feature Scaling(特征缩放)"></a>tip3 Feature Scaling(特征缩放)</h4><img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123120357726.png" alt="image-20210123120357726" style="zoom:50%;" />
-
-<p> 假设x1和x2是宝可梦的两个不同特征值，一个是cp值，一个是hp值，从图1中可以发现x1和x2的变化范围相差较大，这个时候就要对他们进行特征缩放，使它们的变化范围大致相同。为什么要这么做呢？</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123120229975.png" alt="image-20210123120229975" style="zoom:50%;" />
-
-<p>第一个图，你拐了一个弯，你不会指向最低点去走，但是第二图中，如果它真的是一个正圆的话，你不管在哪个位置，你都会直接向着圆心走，可以提高效率。</p>
-<p>在之前讲gradient descent时讲到了这样一个图：</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210122110249551.png" alt="image-20210122110249551" style="zoom:50%;" />
-
-<p>把前面的二维图放在三维进行gradient descent大概就是这样。</p>
-<p>那feature scaling的方法有很多种，常见的做法是下面这种：</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123121450486.png" alt="image-20210123121450486" style="zoom:50%;" />
-
-<p>mean是平均值，standard deviation是标准差</p>
-<p><strong>接下来讲一点理论的东西，为什么gradient descent会work，它背后的理论基础是什么？</strong></p>
-<p>在进入正题之前，给大家一个<strong>warning of math</strong>，这个部分没有听懂也没关系，明天的太阳依旧会升起</p>
-<p>optimization problem：最优化问题    </p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123161213604.png" alt="image-20210123161213604" style="zoom:50%;" />
-
-<p>使用Taylor series 证明了gradient descent 过程的来源</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123161330200.png" alt="image-20210123161330200" style="zoom:50%;" />
-
-<p>you can consider the second order term, e.g Newton’s method.</p>
-<p>梯度下降的局限性：梯度消失</p>
-<p>当梯度消失的时候，你不一定就接近了local minima，有可能 loss function 还在高原地区，比如下面这张图：</p>
-<img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210123162225658.png" alt="image-20210123162225658" style="zoom:50%;" />
-
-<p>而且你也不知道你的 local minima 是不是 global minima。</p>
-<p>这是一个有意思的问题，下一节学习最优化。</p>
-]]></content>
-      <categories>
-        <category>computer</category>
       </categories>
   </entry>
   <entry>
@@ -1863,7 +1863,7 @@
 
 
 
-<p><strong>方法二：用二叉树的递归套路</strong></p>
+<p><strong>方法二：用二叉树的递归套路（树型DP，在树上做动态规划）</strong></p>
 <p>判断以x结点为头结点的树是不是完全二叉树，怎么分类呢？这个分类标准很有意思，根据最后一层的结点到哪了来分类。</p>
 <ol>
 <li>所有层都是满的，没有缺口</li>
@@ -1985,7 +1985,7 @@
 <li>最自然智慧的算法</li>
 <li>用一种局部最功利的标准，总是做出在当前看来是最好的选择</li>
 <li>难点在于证明局部最功利的标准可以得到全局最优解(一步一步把我的阶段性目标达到，最后能达到总的最优).如果你的贪心算法最后不会错过全局最优解，那么它就是有效的，反之就是无效的</li>
-<li></li>
+<li>对贪心算法的学习主要以增加阅历和经验为主</li>
 </ol>
 <p>贪心算法有些时候是无效的(比如下面这个题，我要拿到最多的1)：(这道题是用动态规划解的，在这里不用纠结，后面会讲)</p>
 <img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20210124174935692.png" alt="image-20210124174935692" style="zoom: 33%;" />
@@ -2088,7 +2088,7 @@
 <p>就是一个二叉树的中序遍历，代码很简单，如下：</p>
 <img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20201217205500038.png" alt="image-20201217205500038" style="zoom:50%;" />
 
-<h3 id="二叉树的递归套路-1"><a href="#二叉树的递归套路-1" class="headerlink" title="二叉树的递归套路"></a>二叉树的递归套路</h3><p>可以解决面试中绝大多数的二叉树问他尤其是树型dp问题，绝大多数大到什么程度，95%以上</p>
+<h3 id="二叉树的递归套路-1"><a href="#二叉树的递归套路-1" class="headerlink" title="二叉树的递归套路"></a>二叉树的递归套路</h3><p>可以解决面试中绝大多数的二叉树问题尤其是树型dp问题，绝大多数大到什么程度，95%以上</p>
 <p>本质是利用二叉树的便利性。本质就是在树上做动态规划。</p>
 <p>给定一个二叉树的头结点head，返回这颗二叉树是不是平衡二叉树</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Info</span><span class="token punctuation">&#123;</span>
@@ -2119,6 +2119,7 @@
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+<p>在树上重复已有过程并直接取得记录过的结果，在树上做动态规划有点感觉了。</p>
 <h3 id="二叉树的递归套路-2"><a href="#二叉树的递归套路-2" class="headerlink" title="二叉树的递归套路"></a>二叉树的递归套路</h3><ol>
 <li>假设以X结点为头，假设可以向X左树和X右树要任何信息</li>
 <li>在上一步的假设情况下，讨论以X为头结点的树，得到答案的可能性（很重要）</li>
@@ -3344,7 +3345,7 @@ JAVA代码
             <span class="token keyword">int</span> path <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
             <span class="token comment">//下面这个for循环可厉害了</span>
             <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> str<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                path <span class="token operator">=</span> str<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'a'</span><span class="token punctuation">;</span>  <span class="token comment">//用对应加入的字符的ASCII码减去a的ASCII码，这样a的path就是0，b的										path是1，c的path是2...以此类推，对应成走哪条路</span>
+                path <span class="token operator">=</span> str<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'a'</span><span class="token punctuation">;</span>  <span class="token comment">//用对应加入的字符的ASCII码减去a的ASCII码，这样a的path就是0，b的		path是1，c的path是2...以此类推，对应成走哪条路</span>
                 <span class="token keyword">if</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>nexts<span class="token punctuation">[</span>path<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
                     node<span class="token punctuation">.</span>nexts<span class="token punctuation">[</span>path<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Node1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//在这个方向上建出一个新结点来</span>
                     <span class="token comment">//nexts数组中的数据类型是Node1结点型的(有点像链表)</span>
@@ -3372,7 +3373,7 @@ JAVA代码
                 <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">//</span>
             <span class="token punctuation">&#125;</span>
             node <span class="token operator">=</span> node<span class="token punctuation">.</span>nexts<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>  <span class="token comment">//注意，这里并不会直接跳到数组中接下来的下一个字母，而是根据index的值跳到当前所在的单词的下一个字母</span>
         <span class="token keyword">return</span> node<span class="token punctuation">.</span>end<span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
     
@@ -3384,7 +3385,7 @@ JAVA代码
         <span class="token keyword">char</span><span class="token punctuation">[</span><span class="token punctuation">]</span> chs <span class="token operator">=</span> pre<span class="token punctuation">.</span><span class="token function">toCharArray</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token class-name">Node1</span> node <span class="token operator">=</span> root<span class="token punctuation">;</span>
         <span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> cha<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> chs<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
             index <span class="token operator">=</span> chs<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token string">'a'</span><span class="token punctuation">;</span>
             <span class="token keyword">if</span><span class="token punctuation">(</span>node<span class="token punctuation">.</span>next<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
                 <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
@@ -3474,7 +3475,8 @@ JAVA代码
     <span class="token punctuation">&#125;</span>
     <span class="token keyword">int</span> res <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
     <span class="token keyword">while</span><span class="token punctuation">(</span>max <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        res<span class="token operator">++</span><span class="token punctuation">,</span>
+        res<span class="token operator">++</span><span class="token punctuation">;</span>
+        max <span class="token operator">/=</span> <span class="token number">10</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 
@@ -3501,7 +3503,7 @@ JAVA代码
             count<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> count<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> count<span class="token punctuation">[</span>i <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token comment">//然后count在自己上面做累加和，然后count变成count'</span>
         <span class="token punctuation">&#125;</span>
         <span class="token keyword">for</span><span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token class-name">R</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> <span class="token class-name">L</span><span class="token punctuation">;</span> i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            j <span class="token operator">=</span> <span class="token function">getDigit</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> d<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//找到当前数组中数字的第i位数是多少，赋给j</span>
+            j <span class="token operator">=</span> <span class="token function">getDigit</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> d<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//找到当前数组中数字的第d位数是多少，赋给j</span>
             help<span class="token punctuation">[</span>count<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">//找到了那个数的某一位之后在count中取出来，对应地找到原来的整数，										并放入help中（count中下标是i，放入help数组中下标就是i-1） </span>
             count<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">--</span><span class="token punctuation">;</span>                 <span class="token comment">//不要忘了词频减减</span>
             <span class="token comment">//这个循环结束时候help里面装的就是我们从桶中倒出来的东西</span>
@@ -3512,7 +3514,7 @@ JAVA代码
         <span class="token comment">//然后最上面d++，d=2继续，d=3继续...一直到最大位digit</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
-<span class="token comment">//这个实现可以说是非常6了，如果你实在懒得想，搞十个队列来写也不是不可以，但越简单越好</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment">//这个实现可以说是非常6了，如果你实在懒得想，搞十个队列来写也不是不可以，但越简单越好</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>help数组的代码实现，下面是一个图解：(for循环中的内容)</p>
 <img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20201205094752811.png" alt="image-20201205094752811" style="zoom:50%;" />

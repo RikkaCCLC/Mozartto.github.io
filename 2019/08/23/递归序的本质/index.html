@@ -301,7 +301,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>6.5k</span>
+      <span>6.6k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -386,7 +386,7 @@
 <p>就是一个二叉树的中序遍历，代码很简单，如下：</p>
 <img src="https://cdn.jsdelivr.net/gh/Mozartto/pictures/Mozarttoimage-20201217205500038.png" alt="image-20201217205500038" style="zoom:50%;" />
 
-<h3 id="二叉树的递归套路-1"><a href="#二叉树的递归套路-1" class="headerlink" title="二叉树的递归套路"></a>二叉树的递归套路</h3><p>可以解决面试中绝大多数的二叉树问他尤其是树型dp问题，绝大多数大到什么程度，95%以上</p>
+<h3 id="二叉树的递归套路-1"><a href="#二叉树的递归套路-1" class="headerlink" title="二叉树的递归套路"></a>二叉树的递归套路</h3><p>可以解决面试中绝大多数的二叉树问题尤其是树型dp问题，绝大多数大到什么程度，95%以上</p>
 <p>本质是利用二叉树的便利性。本质就是在树上做动态规划。</p>
 <p>给定一个二叉树的头结点head，返回这颗二叉树是不是平衡二叉树</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Info</span><span class="token punctuation">&#123;</span>
@@ -417,6 +417,7 @@
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+<p>在树上重复已有过程并直接取得记录过的结果，在树上做动态规划有点感觉了。</p>
 <h3 id="二叉树的递归套路-2"><a href="#二叉树的递归套路-2" class="headerlink" title="二叉树的递归套路"></a>二叉树的递归套路</h3><ol>
 <li>假设以X结点为头，假设可以向X左树和X右树要任何信息</li>
 <li>在上一步的假设情况下，讨论以X为头结点的树，得到答案的可能性（很重要）</li>
