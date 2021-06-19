@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;mozartto.cn&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Muse&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;always&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script>
+<meta name="description" content="从暴力递归到动态规划（二）现在先不用去leetcode刷题，搞完这些方法都会了刷得更快。目前主要是以题目为主。 背包问题来解决一个比较经典的问题：背包问题。 有一批货物，现在给你两个数组，一个数组记录货物的重量，长度为N；有一个数组记录货物的价值，长度也是N；也就是说两个数组的i位置就代表这个编号为i的货物的重量与价值。 第三个参数是int bag，代表你这个背包的大小，也就是能装下多少货物。规定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Motto">
+<meta property="og:url" content="https://mozartto.cn/2021/06/18/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:site_name" content="Motto">
+<meta property="og:description" content="从暴力递归到动态规划（二）现在先不用去leetcode刷题，搞完这些方法都会了刷得更快。目前主要是以题目为主。 背包问题来解决一个比较经典的问题：背包问题。 有一批货物，现在给你两个数组，一个数组记录货物的重量，长度为N；有一个数组记录货物的价值，长度也是N；也就是说两个数组的i位置就代表这个编号为i的货物的重量与价值。 第三个参数是int bag，代表你这个背包的大小，也就是能装下多少货物。规定">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618152439002.png">
+<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618141512489.png">
+<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618152145927.png">
+<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618154615015.png">
+<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618185134951.png">
+<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618190056715.png">
+<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618190743740.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618204559727.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618204511647.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618204826674.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618212808967.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618214140850.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618215015839.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618214943195.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618215955326.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618215832837.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618220201605.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618220512354.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618222940038.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618225507244.png">
+<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618225729067.png">
+<meta property="article:published_time" content="2021-06-18T11:26:27.138Z">
+<meta property="article:modified_time" content="2021-06-18T11:26:27.138Z">
+<meta property="article:author" content="Motto">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618152439002.png">
+
+
+<link rel="canonical" href="https://mozartto.cn/2021/06/18/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;mozartto.cn&#x2F;2021&#x2F;06&#x2F;18&#x2F;%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;18&#x2F;从暴力递归到动态规划（二）&#x2F;&quot;,&quot;title&quot;:&quot;&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title> | Motto</title><script src="/js/config.js"></script>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Motto</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">simple makes better</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-computer"><a href="/categories/computer/" rel="section"><i class="fas fa-laptop fa-fw"></i>computer</a></li>
+        <li class="menu-item menu-item-books"><a href="/books/" rel="section"><i class="fas fa-book fa-fw"></i>books</a></li>
+        <li class="menu-item menu-item-life"><a href="/categories/life/" rel="section"><i class="fas fa-mug-hot fa-fw"></i>life</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-games"><a href="/games/" rel="section"><i class="fab fa-steam fa-fw"></i>games</a></li>
+        <li class="menu-item menu-item-other"><a href="/categories/other/" rel="section"><i class="fas fa-glass-cheers fa-fw"></i>other</a></li>
+        <li class="menu-item menu-item-message"><a href="/message/" rel="section"><i class="fas fa-comment-dots fa-fw"></i>message</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">从暴力递归到动态规划（二）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">背包问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E5%9B%9B"><span class="nav-number">3.</span> <span class="nav-text">题目四</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E4%BA%94"><span class="nav-number">4.</span> <span class="nav-text">题目五</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E9%95%BF%E5%85%AC%E5%85%B1%E5%AD%90%E5%BA%8F%E5%88%97"><span class="nav-number">5.</span> <span class="nav-text">最长公共子序列</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Motto"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Motto</p>
+  <div class="site-description" itemprop="description">a blog about some record in life</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Mozartto" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Mozartto" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=1220883974@qq.com" title="E-Mail → https:&#x2F;&#x2F;mail.qq.com&#x2F;cgi-bin&#x2F;qm_share?t&#x3D;qm_mailme&amp;email&#x3D;1220883974@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Jerry21313800" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;Jerry21313800" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.quora.com/profile/Jerry-1020" title="Quora → https:&#x2F;&#x2F;www.quora.com&#x2F;profile&#x2F;Jerry-1020" rel="noopener" target="_blank"><i class="fab fa-quora fa-fw"></i>Quora</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/Mozartto" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://mozartto.cn/2021/06/18/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Motto">
+      <meta itemprop="description" content="a blog about some record in life">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Motto">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-18 19:26:27" itemprop="dateCreated datePublished" datetime="2021-06-18T19:26:27+08:00">2021-06-18</time>
+    </span>
+
+  
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Changyan: </span>
+    
+    
+      <a title="changyan" href="/2021/06/18/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2021/06/18/从暴力递归到动态规划（二）/" itemprop="commentCount"></span>
+      </a>
+    
+  </span>
+  
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="从暴力递归到动态规划（二）"><a href="#从暴力递归到动态规划（二）" class="headerlink" title="从暴力递归到动态规划（二）"></a>从暴力递归到动态规划（二）</h3><p>现在先不用去leetcode刷题，搞完这些方法都会了刷得更快。目前主要是以题目为主。</p>
+<h3 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h3><p>来解决一个比较经典的问题：背包问题。</p>
+<p>有一批货物，现在给你两个数组，一个数组记录货物的重量，长度为N；有一个数组记录货物的价值，长度也是N；也就是说两个数组的i位置就代表这个编号为i的货物的重量与价值。</p>
+<p>第三个参数是int bag，代表你这个背包的大小，也就是能装下多少货物。规定背包中货物的总重量之和加起来不能超过2000，返回在不超过背包容量情况下的最大价值。</p>
+<p>动态规划解决问题的大方向就是尝试。这个尝试是一种从左往右的尝试，从左往右的尝试可以解决很多问题，背包问题就是其中之一。</p>
+<p>下面来看一下递归的代码：</p>
+<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618152439002.png" alt="image-20210618152439002" style="zoom: 80%;" />
+
+<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618141512489.png" alt="image-20210618141512489" style="zoom: 67%;" />
+
+<p>接下来将递归代码改成傻缓存代码：</p>
+<p>建表，分析出base case，每一行的数据只依赖其下一行的数据，把递归改成从表中取数据：</p>
+<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618152145927.png" alt="image-20210618152145927" style="zoom:67%;" />
+
+<p>不要去硬憋动态转移方程，那玩意儿你搞不定，你只要写清楚尝试，动态规划就出来了。</p>
+<p>为何返回dp[0] [bag]？返回值是你暴力递归决定的，只是你把中间的递归过程改成了直接从表里拿数据。</p>
+<h3 id="题目四"><a href="#题目四" class="headerlink" title="题目四"></a>题目四</h3><p>规定1和A对应，2和B对应，3和C对应…</p>
+<p>那么一个数字字符串比如“111”就可以转化为：“AAA”、“KA”和”AK”。现在给定一个只有数字字符组成的字符串str，返回有多少种转化结果。</p>
+<p>递归：</p>
+<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618154615015.png" alt="image-20210618154615015" style="zoom:67%;" />
+
+<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618185134951.png" alt="image-20210618185134951" style="zoom:67%;" />
+
+<p>i单转就只有一种转化方法，唯一且固定。</p>
+<p>下面，改动态规划：</p>
+<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618190056715.png" alt="image-20210618190056715" style="zoom:67%;" />
+
+<p>改出来的表是一维表。为啥是一维表？一个可变参数代表一切。</p>
+<p>中间如何加工呢？看位置依赖。i位置依赖i+1位置（i位置依赖其后面的一个位置）。毫无疑问，从右往左填，填到0位置去。</p>
+<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618190743740.png" alt="image-20210618190743740" style="zoom: 67%;" />
+
+
+
+<h3 id="题目五"><a href="#题目五" class="headerlink" title="题目五"></a>题目五</h3><p>给定一个字符串str，给定一个字符串类型的数组arr，出现的字符都是小写英文。arr每一个字符串代表一张贴纸，你可以把单个字符串剪开使用，目的是拼出str来。返回需要至少多少张贴纸可以完成这个任务。</p>
+<p>例子：str=”babac”   arr={“ba”, “c”, “abcd”}，每个贴纸无穷张。</p>
+<p>至少</p>
+<p>需要两张贴纸”ba”和”abcd”的贴纸，因为使用这两张贴纸，把一个字符单独剪开，含有两个a、两个b、一个c。是可以返回str的，所以返回2。</p>
+<p>所以我们只需要找到能够包含str中所有字母的最少贴纸组合即可。</p>
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618204559727.png" alt="image-20210618204559727" style="zoom:67%;" />
+
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618204511647.png" alt="image-20210618204511647" style="zoom:67%;" />
+
+
+
+<p>关键优化：用词频替代贴纸数组</p>
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618204826674.png" alt="image-20210618204826674" style="zoom:45%;" />
+
+<p>使用二维数组可以替换贴纸数组。</p>
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618212808967.png" alt="image-20210618212808967" style="zoom:45%;" />
+
+<p>剪枝：将目标str排序，就像上图一样，一开始是将所有的剪纸全部将目标str匹配一遍，但是剪枝的操作就是比如str的第一个开头字母是a，我们就只先匹配必须含有a字母的剪纸，然后到了b之后只匹配必须含有b字母的贴纸。这样其实是不影响总的最少剪纸的数量的。因为你就算开始不消掉a，后续总有一个时刻需要消掉a，而这个时刻总会到来，你提前让这个时刻到来，也不会影响答案。所以我们的逻辑就变成：只含有第一个字符的贴纸先试，也不会影响答案。你也可以规定这个字符串必须是含有最后一个字符的贴纸是才行，必须包含中间字符的贴纸也可以，因为总有消掉这些字符的时候。</p>
+<p>会不会重复呢？比如包含了最坏情况？不会，取得的永远是最小值：</p>
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618214140850.png" alt="image-20210618214140850" style="zoom: 45%;" />
+
+<p>比如上面这张图，三个贴纸都是可以的，但是第一个贴纸贴了之后还剩下4个a，第三个贴纸贴了之后还剩下2个a，取得是使用贴纸数量的最小值，所以最终选的还是第三个贴纸。</p>
+<p>下面来看一下代码：</p>
+<p>这个代码有两个非常重要的优化，第一个重要的优化就是两个词频表直接互怼，省去很多时间。第二个重要优化就是剪枝。</p>
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618215015839.png" alt="image-20210618215015839" style="zoom:67%;" />
+
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618214943195.png" alt="image-20210618214943195" style="zoom:67%;" />
+
+<p>这个题目在整个从暴力递归到动态规划中的地位非常高，为什么？因为这个递归你不需要搞成严格表结构的动态规划。为什么？我们先看一下它有没有改的必要。它的可变参数是什么？是字符串，这玩意儿你去哪找它的范围？</p>
+<p>所以我们直接用傻缓存即可。通过啥来缓存？DP表，一个Map结构的DP表</p>
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618215955326.png" alt="image-20210618215955326" style="zoom:67%;" />
+
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618215832837.png" alt="image-20210618215832837" style="zoom: 67%;" />
+
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618220201605.png" alt="image-20210618220201605" style="zoom:67%;" />
+
+<p>但是能够做严格位置依赖的还是要做。之后会讲为什么。因为很多技巧来自于你整理好位置依赖之后的进一步优化。</p>
+<h3 id="最长公共子序列"><a href="#最长公共子序列" class="headerlink" title="最长公共子序列"></a>最长公共子序列</h3><p>动态规划尝试模型分类：</p>
+<ol>
+<li>从左往右尝试模型</li>
+<li>范围尝试模型（玩家摸牌的题）</li>
+<li>样本对应模型（下面要讲的这一道题）</li>
+<li>业务限制模型</li>
+</ol>
+<p>这四个模型都是大套路，每个模型都不知道解决几千个题（doge），哈哈哈。</p>
+<p>下面来看题目描述：最长公共子序列，下面这两个字符串str1和str2的最长公共子序列的长度为5（12345）</p>
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618220512354.png" alt="image-20210618220512354" style="zoom:45%;" />
+
+<p>样本对应模型往往讨论当前的结尾该如何组织可能性（这是一个经验）</p>
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618222940038.png" alt="image-20210618222940038" style="zoom:67%;" />
+
+<p>但是这个方法会超时。</p>
+<p>DP方法：</p>
+<p>太好改了，就直接把递归过程改成从表里面拿值。</p>
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618225507244.png" alt="image-20210618225507244" style="zoom:67%;" />
+
+<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618225729067.png" alt="image-20210618225729067" style="zoom:67%;" />
+
+<p>你之前计算的东西都是可以依赖之前计算的结果的（递归过程），所以这就是为什么要从结尾来组织可能性。因为结尾位置分清楚了之后，你剩下的可能性都是算过的。</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    Donate
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.jpg" alt="Motto WeChat Pay">
+        <span>WeChat Pay</span>
+      </div>
+      <div>
+        <img src="/images/alipay.jpg" alt="Motto Alipay">
+        <span>Alipay</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>Motto
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="https://mozartto.cn/2021/06/18/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/" title="">https://mozartto.cn/2021/06/18/从暴力递归到动态规划（二）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+          <div class="followme">
+  <span>Welcome to my other publishing channels</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="https://twitter.com/Jerry21313800">
+          <span class="icon">
+            <i class="fab fa-twitter"></i>
+          </span>
+
+          <span class="label">Twitter</span>
+        </a>
+      </div>
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/14/%E5%9B%BE/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="SOHUCS"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">黔ICP备 2021003893 </a>
+      <img src="/images/beian.png"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=2021003893" rel="noopener" target="_blank">黔网公安备 2021003893 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fas fa-battery-full"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Motto</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>Symbols count total: </span>
+    <span title="Symbols count total">254k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>Reading time total &asymp;</span>
+    <span title="Reading time total">3:51</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="changyan" type="application/json">{&quot;enable&quot;:true,&quot;appid&quot;:&quot;cyvsVbDPQ&quot;,&quot;appkey&quot;:&quot;850d54eeada1b129a1fa523dedb189ff&quot;}</script>
+<script src="/js/third-party/comments/changyan.js"></script>
+
+</body>
+</html>
