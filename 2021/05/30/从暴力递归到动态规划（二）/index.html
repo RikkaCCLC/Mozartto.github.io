@@ -20,49 +20,29 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;mozartto.cn&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Muse&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;always&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script>
-<meta name="description" content="从暴力递归到动态规划（二）现在先不用去leetcode刷题，搞完这些方法都会了刷得更快。目前主要是以题目为主。 背包问题来解决一个比较经典的问题：背包问题。 有一批货物，现在给你两个数组，一个数组记录货物的重量，长度为N；有一个数组记录货物的价值，长度也是N；也就是说两个数组的i位置就代表这个编号为i的货物的重量与价值。 第三个参数是int bag，代表你这个背包的大小，也就是能装下多少货物。规定">
+<meta name="description" content="动态规划第二篇：背包问题、样本对应模型，以及对应的例题。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Motto">
-<meta property="og:url" content="https://mozartto.cn/2021/06/18/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:title" content="从暴力递归到动态规划（二）">
+<meta property="og:url" content="https://mozartto.cn/2021/05/30/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
 <meta property="og:site_name" content="Motto">
-<meta property="og:description" content="从暴力递归到动态规划（二）现在先不用去leetcode刷题，搞完这些方法都会了刷得更快。目前主要是以题目为主。 背包问题来解决一个比较经典的问题：背包问题。 有一批货物，现在给你两个数组，一个数组记录货物的重量，长度为N；有一个数组记录货物的价值，长度也是N；也就是说两个数组的i位置就代表这个编号为i的货物的重量与价值。 第三个参数是int bag，代表你这个背包的大小，也就是能装下多少货物。规定">
+<meta property="og:description" content="动态规划第二篇：背包问题、样本对应模型，以及对应的例题。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618152439002.png">
-<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618141512489.png">
-<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618152145927.png">
-<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618154615015.png">
-<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618185134951.png">
-<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618190056715.png">
-<meta property="og:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618190743740.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618204559727.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618204511647.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618204826674.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618212808967.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618214140850.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618215015839.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618214943195.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618215955326.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618215832837.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618220201605.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618220512354.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618222940038.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618225507244.png">
-<meta property="og:image" content="https://mozartto.cn/2021/06/18/AppData/Roaming/Typora/typora-user-images/image-20210618225729067.png">
-<meta property="article:published_time" content="2021-06-18T11:26:27.138Z">
-<meta property="article:modified_time" content="2021-06-18T11:26:27.138Z">
+<meta property="og:image" content="https://mozartto.cn/images/30.jpg">
+<meta property="article:published_time" content="2021-05-30T10:54:46.000Z">
+<meta property="article:modified_time" content="2021-05-30T11:23:39.000Z">
 <meta property="article:author" content="Motto">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618152439002.png">
+<meta name="twitter:image" content="https://mozartto.cn/images/30.jpg">
 
 
-<link rel="canonical" href="https://mozartto.cn/2021/06/18/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/">
+<link rel="canonical" href="https://mozartto.cn/2021/05/30/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;mozartto.cn&#x2F;2021&#x2F;06&#x2F;18&#x2F;%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;18&#x2F;从暴力递归到动态规划（二）&#x2F;&quot;,&quot;title&quot;:&quot;&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;mozartto.cn&#x2F;2021&#x2F;05&#x2F;30&#x2F;%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;30&#x2F;从暴力递归到动态规划（二）&#x2F;&quot;,&quot;title&quot;:&quot;从暴力递归到动态规划（二）&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title> | Motto</title><script src="/js/config.js"></script>
+<title>从暴力递归到动态规划（二） | Motto</title><script src="/js/config.js"></script>
   
 
 
@@ -187,7 +167,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -246,10 +226,15 @@
 
 <div class="post-block">
   
-  
+  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+    
+    <div class="post-gallery-image">
+      <img src="/images/30.jpg" itemprop="contentUrl">
+    </div>
+    </div>
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://mozartto.cn/2021/06/18/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/">
+    <link itemprop="mainEntityOfPage" href="https://mozartto.cn/2021/05/30/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -262,7 +247,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          从暴力递归到动态规划（二）
         </h1>
 
         <div class="post-meta-container">
@@ -272,8 +257,18 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
+      
 
-      <time title="Created: 2021-06-18 19:26:27" itemprop="dateCreated datePublished" datetime="2021-06-18T19:26:27+08:00">2021-06-18</time>
+      <time title="Created: 2021-05-30 18:54:46 / Modified: 19:23:39" itemprop="dateCreated datePublished" datetime="2021-05-30T18:54:46+08:00">2021-05-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/life/" itemprop="url" rel="index"><span itemprop="name">life</span></a>
+        </span>
     </span>
 
   
@@ -286,8 +281,8 @@
       <span class="post-meta-item-text">Changyan: </span>
     
     
-      <a title="changyan" href="/2021/06/18/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/#SOHUCS" itemprop="discussionUrl">
-        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2021/06/18/从暴力递归到动态规划（二）/" itemprop="commentCount"></span>
+      <a title="changyan" href="/2021/05/30/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/#SOHUCS" itemprop="discussionUrl">
+        <span id="changyan_count_unit" class="post-comments-count hc-comment-count" data-xid="2021/05/30/从暴力递归到动态规划（二）/" itemprop="commentCount"></span>
       </a>
     
   </span>
@@ -311,6 +306,7 @@
     </span>
 </div>
 
+            <div class="post-description">动态规划第二篇：背包问题、样本对应模型，以及对应的例题。</div>
         </div>
       </header>
 
@@ -324,30 +320,30 @@
 <p>第三个参数是int bag，代表你这个背包的大小，也就是能装下多少货物。规定背包中货物的总重量之和加起来不能超过2000，返回在不超过背包容量情况下的最大价值。</p>
 <p>动态规划解决问题的大方向就是尝试。这个尝试是一种从左往右的尝试，从左往右的尝试可以解决很多问题，背包问题就是其中之一。</p>
 <p>下面来看一下递归的代码：</p>
-<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618152439002.png" alt="image-20210618152439002" style="zoom: 80%;" />
+<img src="https://i.loli.net/2021/06/19/OUBpyhALY1FDo5j.png" alt="image-20210618152439002" style="zoom: 80%;" />
 
-<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618141512489.png" alt="image-20210618141512489" style="zoom: 67%;" />
+<img src="https://i.loli.net/2021/06/19/jF5ITi73lYUOmS1.png" alt="image-20210618141512489" style="zoom: 67%;" />
 
 <p>接下来将递归代码改成傻缓存代码：</p>
 <p>建表，分析出base case，每一行的数据只依赖其下一行的数据，把递归改成从表中取数据：</p>
-<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618152145927.png" alt="image-20210618152145927" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/FzY83lcXMBDuNnG.png" alt="image-20210618152145927" style="zoom:67%;" />
 
 <p>不要去硬憋动态转移方程，那玩意儿你搞不定，你只要写清楚尝试，动态规划就出来了。</p>
 <p>为何返回dp[0] [bag]？返回值是你暴力递归决定的，只是你把中间的递归过程改成了直接从表里拿数据。</p>
 <h3 id="题目四"><a href="#题目四" class="headerlink" title="题目四"></a>题目四</h3><p>规定1和A对应，2和B对应，3和C对应…</p>
 <p>那么一个数字字符串比如“111”就可以转化为：“AAA”、“KA”和”AK”。现在给定一个只有数字字符组成的字符串str，返回有多少种转化结果。</p>
 <p>递归：</p>
-<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618154615015.png" alt="image-20210618154615015" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/kgwDRpKocLiGT14.png" alt="image-20210618154615015" style="zoom:67%;" />
 
-<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618185134951.png" alt="image-20210618185134951" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/dvpkgWcY5ERPotQ.png" alt="image-20210618185134951" style="zoom:67%;" />
 
 <p>i单转就只有一种转化方法，唯一且固定。</p>
 <p>下面，改动态规划：</p>
-<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618190056715.png" alt="image-20210618190056715" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/YJcAHLESWgUdBMp.png" alt="image-20210618190056715" style="zoom:67%;" />
 
 <p>改出来的表是一维表。为啥是一维表？一个可变参数代表一切。</p>
 <p>中间如何加工呢？看位置依赖。i位置依赖i+1位置（i位置依赖其后面的一个位置）。毫无疑问，从右往左填，填到0位置去。</p>
-<img src="C:/Users/xiaoqiyao/AppData/Roaming/Typora/typora-user-images/image-20210618190743740.png" alt="image-20210618190743740" style="zoom: 67%;" />
+<img src="https://i.loli.net/2021/06/19/sh5oIbBf2VXd9FP.png" alt="image-20210618190743740" style="zoom: 67%;" />
 
 
 
@@ -356,36 +352,36 @@
 <p>至少</p>
 <p>需要两张贴纸”ba”和”abcd”的贴纸，因为使用这两张贴纸，把一个字符单独剪开，含有两个a、两个b、一个c。是可以返回str的，所以返回2。</p>
 <p>所以我们只需要找到能够包含str中所有字母的最少贴纸组合即可。</p>
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618204559727.png" alt="image-20210618204559727" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/GVtyhPmzJjwS8UZ.png" alt="image-20210618204559727" style="zoom:67%;" />
 
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618204511647.png" alt="image-20210618204511647" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/Lf1NpSEzxv4sORa.png" alt="image-20210618204511647" style="zoom:67%;" />
 
 
 
 <p>关键优化：用词频替代贴纸数组</p>
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618204826674.png" alt="image-20210618204826674" style="zoom:45%;" />
+<img src="https://i.loli.net/2021/06/19/7tDOHCeAB9sEbWw.png" alt="image-20210618204826674" style="zoom:45%;" />
 
 <p>使用二维数组可以替换贴纸数组。</p>
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618212808967.png" alt="image-20210618212808967" style="zoom:45%;" />
+<img src="https://i.loli.net/2021/06/19/Kw7pUzICDs6WSx5.png" alt="image-20210618212808967" style="zoom:45%;" />
 
 <p>剪枝：将目标str排序，就像上图一样，一开始是将所有的剪纸全部将目标str匹配一遍，但是剪枝的操作就是比如str的第一个开头字母是a，我们就只先匹配必须含有a字母的剪纸，然后到了b之后只匹配必须含有b字母的贴纸。这样其实是不影响总的最少剪纸的数量的。因为你就算开始不消掉a，后续总有一个时刻需要消掉a，而这个时刻总会到来，你提前让这个时刻到来，也不会影响答案。所以我们的逻辑就变成：只含有第一个字符的贴纸先试，也不会影响答案。你也可以规定这个字符串必须是含有最后一个字符的贴纸是才行，必须包含中间字符的贴纸也可以，因为总有消掉这些字符的时候。</p>
 <p>会不会重复呢？比如包含了最坏情况？不会，取得的永远是最小值：</p>
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618214140850.png" alt="image-20210618214140850" style="zoom: 45%;" />
+<img src="https://i.loli.net/2021/06/19/jXDCOUEGW4JQkhp.png" alt="image-20210618214140850" style="zoom: 45%;" />
 
 <p>比如上面这张图，三个贴纸都是可以的，但是第一个贴纸贴了之后还剩下4个a，第三个贴纸贴了之后还剩下2个a，取得是使用贴纸数量的最小值，所以最终选的还是第三个贴纸。</p>
 <p>下面来看一下代码：</p>
 <p>这个代码有两个非常重要的优化，第一个重要的优化就是两个词频表直接互怼，省去很多时间。第二个重要优化就是剪枝。</p>
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618215015839.png" alt="image-20210618215015839" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/Mm4xa2NWcFp3TQl.png" alt="image-20210618215015839" style="zoom:67%;" />
 
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618214943195.png" alt="image-20210618214943195" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/oAjTrwLcVvyutYn.png" alt="image-20210618214943195" style="zoom:67%;" />
 
 <p>这个题目在整个从暴力递归到动态规划中的地位非常高，为什么？因为这个递归你不需要搞成严格表结构的动态规划。为什么？我们先看一下它有没有改的必要。它的可变参数是什么？是字符串，这玩意儿你去哪找它的范围？</p>
 <p>所以我们直接用傻缓存即可。通过啥来缓存？DP表，一个Map结构的DP表</p>
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618215955326.png" alt="image-20210618215955326" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/KvN5hTMqwZ1SiUF.png" alt="image-20210618215955326" style="zoom:67%;" />
 
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618215832837.png" alt="image-20210618215832837" style="zoom: 67%;" />
+<img src="https://i.loli.net/2021/06/19/Tc8hExO29KDtQqG.png" alt="image-20210618215832837" style="zoom: 67%;" />
 
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618220201605.png" alt="image-20210618220201605" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/fX8HksRLIPGDgvn.png" alt="image-20210618220201605" style="zoom:67%;" />
 
 <p>但是能够做严格位置依赖的还是要做。之后会讲为什么。因为很多技巧来自于你整理好位置依赖之后的进一步优化。</p>
 <h3 id="最长公共子序列"><a href="#最长公共子序列" class="headerlink" title="最长公共子序列"></a>最长公共子序列</h3><p>动态规划尝试模型分类：</p>
@@ -397,17 +393,17 @@
 </ol>
 <p>这四个模型都是大套路，每个模型都不知道解决几千个题（doge），哈哈哈。</p>
 <p>下面来看题目描述：最长公共子序列，下面这两个字符串str1和str2的最长公共子序列的长度为5（12345）</p>
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618220512354.png" alt="image-20210618220512354" style="zoom:45%;" />
+<img src="https://i.loli.net/2021/06/19/myH4hx6rNReAnsY.png" alt="image-20210618220512354" style="zoom:45%;" />
 
 <p>样本对应模型往往讨论当前的结尾该如何组织可能性（这是一个经验）</p>
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618222940038.png" alt="image-20210618222940038" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/Nkeq3f8vRQnLAiK.png" alt="image-20210618222940038" style="zoom:67%;" />
 
 <p>但是这个方法会超时。</p>
 <p>DP方法：</p>
 <p>太好改了，就直接把递归过程改成从表里面拿值。</p>
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618225507244.png" alt="image-20210618225507244" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/e2yFckxN8mTW6ju.png" alt="image-20210618225507244" style="zoom:67%;" />
 
-<img src="../AppData/Roaming/Typora/typora-user-images/image-20210618225729067.png" alt="image-20210618225729067" style="zoom:67%;" />
+<img src="https://i.loli.net/2021/06/19/QlYJVwdiFjkmpTK.png" alt="image-20210619231629775" style="zoom:67%;" />
 
 <p>你之前计算的东西都是可以依赖之前计算的结果的（递归过程），所以这就是为什么要从结尾来组织可能性。因为结尾位置分清楚了之后，你剩下的可能性都是算过的。</p>
 
@@ -447,7 +443,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>Post link: </strong>
-      <a href="https://mozartto.cn/2021/06/18/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/" title="">https://mozartto.cn/2021/06/18/从暴力递归到动态规划（二）/</a>
+      <a href="https://mozartto.cn/2021/05/30/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%BA%8C%EF%BC%89/" title="从暴力递归到动态规划（二）">https://mozartto.cn/2021/05/30/从暴力递归到动态规划（二）/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -487,11 +483,14 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/06/14/%E5%9B%BE/" rel="prev" title="">
-                  <i class="fa fa-chevron-left"></i> 
+                <a href="/2021/05/23/multithread/" rel="prev" title="multithreading and high currency">
+                  <i class="fa fa-chevron-left"></i> multithreading and high currency
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2021/05/30/%E4%BB%8E%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92%E5%88%B0%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%EF%BC%88%E4%B8%80%EF%BC%89/" rel="next" title="从暴力递归到动态规划（一）">
+                  从暴力递归到动态规划（一） <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -528,14 +527,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Symbols count total: </span>
-    <span title="Symbols count total">254k</span>
+    <span title="Symbols count total">256k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">3:51</span>
+    <span title="Reading time total">3:52</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>

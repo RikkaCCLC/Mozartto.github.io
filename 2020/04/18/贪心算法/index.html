@@ -22,7 +22,7 @@
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;mozartto.cn&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Muse&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;always&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:1,&quot;unescape&quot;:false,&quot;preload&quot;:false}}</script>
 <meta name="description" content="还一下二叉树的债。顺便聊一聊贪心算法：标准求解过程以及大佬的“偷巧贪心”策略。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="贪心算法">
+<meta property="og:title" content="贪心算法（上）">
 <meta property="og:url" content="https://mozartto.cn/2020/04/18/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="Motto">
 <meta property="og:description" content="还一下二叉树的债。顺便聊一聊贪心算法：标准求解过程以及大佬的“偷巧贪心”策略。">
@@ -39,10 +39,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;mozartto.cn&#x2F;2020&#x2F;04&#x2F;18&#x2F;%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95&#x2F;&quot;,&quot;path&quot;:&quot;2020&#x2F;04&#x2F;18&#x2F;贪心算法&#x2F;&quot;,&quot;title&quot;:&quot;贪心算法&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;mozartto.cn&#x2F;2020&#x2F;04&#x2F;18&#x2F;%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95&#x2F;&quot;,&quot;path&quot;:&quot;2020&#x2F;04&#x2F;18&#x2F;贪心算法&#x2F;&quot;,&quot;title&quot;:&quot;贪心算法（上）&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>贪心算法 | Motto</title><script src="/js/config.js"></script>
+<title>贪心算法（上） | Motto</title><script src="/js/config.js"></script>
   
 
 
@@ -167,7 +167,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -247,7 +247,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          贪心算法
+          贪心算法（上）
         </h1>
 
         <div class="post-meta-container">
@@ -550,7 +550,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>Post link: </strong>
-      <a href="https://mozartto.cn/2020/04/18/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" title="贪心算法">https://mozartto.cn/2020/04/18/贪心算法/</a>
+      <a href="https://mozartto.cn/2020/04/18/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" title="贪心算法（上）">https://mozartto.cn/2020/04/18/贪心算法/</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
@@ -590,13 +590,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/04/02/%E5%A4%AA%E5%88%80%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%E2%80%94%E2%80%94%E6%80%AA%E7%89%A9%E7%8C%8E%E4%BA%BA%E4%B8%96%E7%95%8C/" rel="prev" title="太刀">
-                  <i class="fa fa-chevron-left"></i> 太刀
+                <a href="/2020/04/18/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95%EF%BC%88%E4%B8%8B%EF%BC%89/" rel="prev" title="贪心算法（下）">
+                  <i class="fa fa-chevron-left"></i> 贪心算法（下）
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/04/20/JDBC/" rel="next" title="JDBC">
-                  JDBC <i class="fa fa-chevron-right"></i>
+                <a href="/2020/04/18/%E6%9A%B4%E5%8A%9B%E9%80%92%E5%BD%92/" rel="next" title="暴力递归">
+                  暴力递归 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -634,14 +634,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Symbols count total: </span>
-    <span title="Symbols count total">254k</span>
+    <span title="Symbols count total">256k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">3:51</span>
+    <span title="Reading time total">3:52</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
